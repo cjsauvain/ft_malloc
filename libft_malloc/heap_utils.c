@@ -1,38 +1,47 @@
 #include "ft_malloc.h"
 
-int	count_heap(t_heap *heap)
+int	count_heap(void)
 {
-	if (!heap)
+	if (!g_heap)
 		return 0;
-	if (heap->prev || heap->next)
+	if (g_heap->prev || g_heap->next)
 		return 2;
 	return 1;
 }
 
-int	check_heap_state(t_heap *heap, size_t size)
+int	check_heap_state(size_t size)
 {
-	if (!heap)
+	if (!g_heap)
 		return 1;
-	if (heap->prev)
-		heap = heap->prev;
-	else if (count_heap(heap) < 2)
+	if (g_heap->prev)
+		g_heap = g_heap->prev;
+	else if (count_heap() < 2)
 	{
 		if (size > TINY_BLOCK && size <= SMALL_BLOCK
-			&& heap->size == (size_t)TINY_HEAP)
+			&& g_heap->size == (size_t)TINY_HEAP)
 			return 1;
-		if (size < TINY_BLOCK && heap->size == (size_t)SMALL_HEAP)
+		if (size < TINY_BLOCK && g_heap->size == (size_t)SMALL_HEAP)
 			return 1;
 	}	
 	return 0;
 }
 
-t_heap	*select_heap(t_heap *heap, size_t size)
+void	select_heap(size_t size)
 {
-	if (size <= TINY_BLOCK && heap->size != (size_t)TINY_HEAP)
-		return heap->next;
+	if (size <= TINY_BLOCK && g_heap->size != (size_t)TINY_HEAP)
+	{
+		if (g_heap->next)
+			g_heap = g_heap->next;
+		else
+			g_heap = g_heap->prev;
+	}
 	else if (size > TINY_BLOCK && size <= SMALL_BLOCK 
-		&& heap->size != (size_t)SMALL_HEAP)
-		return heap->next;
-	return heap;
+		&& g_heap->size != (size_t)SMALL_HEAP)
+	{
+		if (g_heap->next)
+			g_heap = g_heap->next;
+		else
+			g_heap = g_heap->prev;
+	}
 }
 

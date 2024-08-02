@@ -15,7 +15,7 @@
 
 typedef struct s_heap	t_heap;
 
-//static t_heap	*g_heap;
+extern t_heap	*g_heap;
 
 typedef struct s_block
 {
@@ -34,11 +34,11 @@ typedef struct s_heap
 } t_heap;
 
 void	*ft_malloc(size_t size);
-void	*create_new_heap(t_heap *heap, size_t size);
-int		count_heap(t_heap *heap);
-int		check_heap_state(t_heap *heap, size_t size);
-t_heap	*select_heap(t_heap *heap, size_t size);
-void	*first_fit(t_heap *heap, size_t size);
-void	*get_avail_block(t_heap *heap, size_t size);
+void	create_new_heap(size_t size);
+int		count_heap(void);
+int		check_heap_state(size_t size);
+void	select_heap(size_t size);
+void	*first_fit(size_t size);
+void	*get_avail_block(size_t size);
 
 #endif

@@ -27,9 +27,9 @@ OBJS = $(SRCS:%.c=%.o)
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -Wpadded -g
+CFLAGS = -Wall -Werror -Wextra -g
 
-LIBFLAGS = -shared
+LIBFLAGS = -fPIC -shared
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(LIBFLAGS) -c $< -o $@

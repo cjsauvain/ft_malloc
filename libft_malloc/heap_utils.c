@@ -1,4 +1,4 @@
-#include "ft_malloc.h"
+#include "libft_malloc.h"
 
 int	count_heap(void)
 {
@@ -9,8 +9,34 @@ int	count_heap(void)
 	return 1;
 }
 
+int	check_heap_left(size_t size)
+{
+	t_block	*tmp;
+	size_t	required_size;
+
+	select_heap(size);
+	tmp = g_heap->free_block;
+	required_size = 0;
+	while (tmp)
+	{
+		if (required_size >= size)
+			return 0;
+		if (!tmp-> prev 
+			|| (char *)tmp->prev + tmp->prev->aligned_size + sizeof(t_block *) == (char *)tmp)
+			required_size += tmp->size;
+		else
+			required_size = 0;
+		tmp = tmp->next;
+	}
+	if (required_size >= size)
+		return 0;
+	return 1;
+}
+
 int	check_heap_state(size_t size)
 {
+	if (size > SMALL_BLOCK)
+		return 0;
 	if (!g_heap)
 		return 1;
 	if (g_heap->prev)

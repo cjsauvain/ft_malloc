@@ -1,0 +1,27 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+add_free_block	realloc.c	/^static void	add_free_block(t_block *ptr_block, size_t realloc_size, size_t aligned_realloc_size)$/;"	f	file:
+add_new_alloc_block	get_avail_block.c	/^static t_block	*add_new_alloc_block(t_block *free_block, size_t size, size_t aligned_size)$/;"	f	file:
+allocate_heap	create_new_heap.c	/^void	allocate_heap(size_t size, int mode)$/;"	f
+check_heap_left	heap_utils.c	/^int	check_heap_left(size_t size)$/;"	f
+check_heap_state	heap_utils.c	/^int	check_heap_state(size_t size)$/;"	f
+count_heap	heap_utils.c	/^int	count_heap(void)$/;"	f
+delete_free_block	get_avail_block.c	/^static t_block	*delete_free_block(t_block *free_block, size_t size, size_t aligned_size)$/;"	f	file:
+extend_block	realloc.c	/^static void	*extend_block(t_block *ptr_block, size_t realloc_size, size_t aligned_realloc_size)$/;"	f	file:
+find_ptr_block	realloc.c	/^static t_block	*find_ptr_block(void *ptr)$/;"	f	file:
+first_fit	get_avail_block.c	/^static void	*first_fit(size_t size, size_t aligned_size)$/;"	f	file:
+ft_free	free.c	/^void	ft_free(void *ptr)$/;"	f
+ft_malloc	malloc.c	/^void	*ft_malloc(size_t size)$/;"	f
+ft_realloc	realloc.c	/^void	*ft_realloc(void *ptr, size_t size)$/;"	f
+g_heap	malloc.c	/^t_heap	*g_heap = NULL;$/;"	v
+get_avail_block	get_avail_block.c	/^void	*get_avail_block(size_t size)$/;"	f
+main	main.c	/^int	main(void)$/;"	f
+merge_blocks	free.c	/^static void	merge_blocks(t_heap *tmp_heap, t_block *tmp_block)$/;"	f	file:
+merge_blocks	realloc.c	/^static void	merge_blocks(t_block *ptr_block, int nb_blocks)$/;"	f	file:
+realloc_ptr	realloc.c	/^static void	*realloc_ptr(t_block *ptr_block, size_t realloc_size)$/;"	f	file:
+select_heap	heap_utils.c	/^void	select_heap(size_t size)$/;"	f
+shrink_block	realloc.c	/^static t_block	*shrink_block(t_block *ptr_block, size_t realloc_size, size_t aligned_realloc_size)$/;"	f	file:

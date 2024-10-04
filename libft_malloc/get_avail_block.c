@@ -62,7 +62,7 @@ static void	*first_fit(size_t size, size_t aligned_size)
 
 	while (tmp_free && tmp_free->size < size)
 		tmp_free = tmp_free->next;
-	if (!tmp_free)
+	if (!tmp_free) //ne pas retourner null mais faire une nouvelle allocation
 		return NULL;
 	tmp_block = add_new_alloc_block(tmp_free, size, aligned_size);
 	g_heap->free_block = delete_free_block(tmp_free, size, aligned_size);

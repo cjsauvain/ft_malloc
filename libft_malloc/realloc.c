@@ -22,16 +22,17 @@ static void	add_free_block(t_block *ptr_block, size_t realloc_size, size_t align
 {
 	t_block	*tmp_block;
 	t_block	*tmp_free;
-	size_t	next_contiguous_tmpblock;
-	size_t	next_contiguous_tmpfree;
+	t_block	*next_contiguous_tmpblock;
+	t_block	*next_contiguous_tmpfree = tmp_free;
 
 	tmp_free = g_heap->free_block;
-	tmp_block = (t_block *)(char *)ptr_block + sizeof(t_block *) + aligned_realloc_size;
-	next_contiguous_tmpblock = (size_t)((char *)ptr_block + sizeof(t_block *) + ptr_block->aligned_size);
+	tmp_block = (t_block *)((char *)ptr_block + sizeof(t_block *) + aligned_realloc_size);
+	next_contiguous_tmpblock = (t_block *)((char *)ptr_block + sizeof(t_block *) + ptr_block->aligned_size);
 	while (tmp_free && tmp_block > tmp_free)
 		tmp_free = tmp_free->next;
-	next_contiguous_tmpfree = (size_t)((char *)tmp_free->prev + sizeof(t_block *) + tmp_free->prev->aligned_size);
-	if (next_contiguous_tmpblock == (size_t)tmp_free)
+	if (tmp_free->prev)
+		next_contiguous_tmpfree = (t_block *)((char *)tmp_free->prev + sizeof(t_block *) + tmp_free->prev->aligned_size);
+	if (next_contiguous_tmpblock == tmp_free)
 	{
 		tmp_block->next = tmp_free->next;
 		tmp_block->prev = tmp_free->prev;
@@ -40,7 +41,7 @@ static void	add_free_block(t_block *ptr_block, size_t realloc_size, size_t align
 		tmp_block->next->prev = tmp_block;
 		tmp_block->prev->next = tmp_block;
 	}
-	else if (next_contiguous_tmpfree == (size_t)tmp_block)
+	else if (next_contiguous_tmpfree == tmp_block)
 	{
 		tmp_free->prev->size += (ptr_block->size - realloc_size);
 		tmp_free->prev->aligned_size += (ptr_block->aligned_size - aligned_realloc_size);
@@ -66,7 +67,7 @@ static void	add_free_block(t_block *ptr_block, size_t realloc_size, size_t align
 
 static t_block	*shrink_block(t_block *ptr_block, size_t realloc_size, size_t aligned_realloc_size)
 {
-	add_free_block(ptr_block, realloc_size, aligned_realloc_size); //tester tous les cas particuliers
+	add_free_block(ptr_block, realloc_size, aligned_realloc_size); //tester tous les cas particuliers + revoir implémentation
 
 	ptr_block->size = realloc_size;
 	ptr_block->aligned_size = aligned_realloc_size;
@@ -115,23 +116,40 @@ static void	*extend_block(t_block *ptr_block, size_t realloc_size, size_t aligne
 	}
 	else
 		new_ptr = ft_malloc(realloc_size);
+		//enlever ptr_block des blocks alloués et le mettre dans les blocks free
 	return new_ptr;
 }
 
 static void	*realloc_ptr(t_block *ptr_block, size_t realloc_size)
 {
-	void	*new_ptr = NULL;
+	void	*new_ptr = ptr_block;
 	size_t	aligned_realloc_size;
 
 	select_heap(realloc_size);
 	aligned_realloc_size = align_mem(realloc_size);
+	if (ptr_block->size <= TINY_BLOCK)
+	{
+		//mettre ptr_block dans les free blocks de cette heap et ft_malloc(realloc_size)
+		if (realloc_size > TINY_BLOCK && realloc_size <= SMALL_BLOCK)
+		else if (realloc_size > SMALL_BLOCK)
+	}
+	else if (ptr_block->size > TINY_BLOCK && ptr_block->size <= SMALL_BLOCK)
+	{
+		//mettre ptr_block dans les free blocks de cette heap et ft_malloc(realloc_size)
+		if (realloc_size <= TINY_BLOCK)
+		else if (realloc_size > SMALL_BLOCK)
+	}
+	else
+	{
+		ft_free(ptr_block);
+		if (realloc_size <= SMALL_BLOCK)
+			new_ptr = ft_malloc(realloc_size);
+	}
 	//a faire: if realloc_size <= TINY_BLOCK || (realloc_size > TINY_BLOCK && realloc_size <= SMALL_BLOCK)
 	if (ptr_block->size > realloc_size)
 		new_ptr = shrink_block(ptr_block, realloc_size, aligned_realloc_size);
 	else if (ptr_block->size < realloc_size)
 		new_ptr = extend_block(ptr_block, realloc_size, aligned_realloc_size);
-	else
-		new_ptr = ptr_block;
 	return new_ptr;
 }
 

@@ -1,33 +1,42 @@
 #include "libft_malloc.h"
 
-static t_block	*add_new_alloc_block(t_block *free_block, size_t size, size_t aligned_size)
+static t_block	*add_new_alloc_block(t_heap_group *heap, t_block *free_block, size_t size)
 {
-	t_block	*tmp_block = g_heap->alloc_block;
+	t_block	*alloc_block;
+	t_block	*tmp;
+	size_t	aligned_size;
 
-	while (g_heap->alloc_block && g_heap->alloc_block->next)
-		g_heap->alloc_block = g_heap->alloc_block->next;
-	tmp_block = g_heap->alloc_block;
-	//if first allocation
-	if (g_heap->alloc_block && !g_heap->alloc_block->next)
-		g_heap->alloc_block = g_heap->alloc_block->next;
-
-	g_heap->alloc_block = free_block;
-	g_heap->alloc_block->size = size;
-	g_heap->alloc_block->aligned_size = aligned_size;
-	g_heap->alloc_block->next = NULL;
-
-	if (tmp_block && g_heap->alloc_block != tmp_block)
+	alloc_block = heap->alloc_block;
+	tmp = NULL;
+	aligned_size = align_mem(size);
+	while (alloc_block && alloc_block->next)
+		alloc_block = alloc_block->next;
+	if (alloc_block)
 	{
-		tmp_block->next = g_heap->alloc_block;
-		g_heap->alloc_block->prev = tmp_block;
+		tmp = alloc_block;
+		alloc_block = alloc_block->next;
 	}
-	return g_heap->alloc_block;
+	alloc_block = free_block;
+	alloc_block->size = size;
+	alloc_block->aligned_size = aligned_size;
+	alloc_block->next = NULL;
+	if (tmp)
+	{
+		tmp->next = alloc_block;
+		alloc_block->prev = tmp;
+	}
+	if (!heap->alloc_block)
+		heap->alloc_block = alloc_block;
+	return heap->alloc_block;
 }
 
-static t_block	*delete_free_block(t_block *free_block, size_t size, size_t aligned_size)
+static t_block	*delete_free_block(t_block *free_block, size_t size) //raccourcir la fonction
 {
-	t_block	*tmp = free_block;
+	t_block	*tmp;
+	size_t	aligned_size;
 
+	tmp = free_block;
+	aligned_size = align_mem(size);
 	if (!free_block->prev && free_block->next)
 	{
 		free_block->next->prev = NULL;
@@ -35,8 +44,8 @@ static t_block	*delete_free_block(t_block *free_block, size_t size, size_t align
 	}
 	else if (!free_block->prev)
 	{
-		free_block = (t_block *)((char *)free_block + aligned_size + sizeof(t_block *));
-		free_block->size = tmp->size - size - sizeof(t_block *);
+		free_block = (t_block *)((char *)free_block + aligned_size + sizeof(t_block));
+		free_block->size = tmp->size - size - sizeof(t_block);
 		free_block->aligned_size = tmp->aligned_size - aligned_size;
 		free_block->next = NULL;
 		free_block->prev = NULL;
@@ -55,32 +64,29 @@ static t_block	*delete_free_block(t_block *free_block, size_t size, size_t align
 	return free_block;
 }
 
-static void	*first_fit(size_t size, size_t aligned_size)
+static void	*first_fit(t_heap_group *heap, size_t size)
 {
-	t_block	*tmp_free = g_heap->free_block;
-	t_block	*tmp_block;
+	t_block	*free_block;
+	t_block	*block;
 
-	while (tmp_free && tmp_free->size < size)
-		tmp_free = tmp_free->next;
-	if (!tmp_free) //ne pas retourner null mais faire une nouvelle allocation
+	free_block = heap->free_block;
+	while (free_block && free_block->size < size)
+		free_block = free_block->next;
+	if (!free_block) //ne pas retourner null mais faire une nouvelle allocation
 		return NULL;
-	tmp_block = add_new_alloc_block(tmp_free, size, aligned_size);
-	g_heap->free_block = delete_free_block(tmp_free, size, aligned_size);
-	return (void *)((char *)tmp_block + sizeof(t_block));
+	heap->free_block = delete_free_block(free_block, size);
+	block = add_new_alloc_block(heap, free_block, size);
+	return (void *)((char *)block + sizeof(t_block));
 }
 
-void	*get_avail_block(size_t size)
+void	*get_avail_block(t_heap_group *heap, size_t size)
 {
 	void	*avail_block;
-	size_t	aligned_size;
 
-	aligned_size = align_mem(size);
-	if (size > SMALL_BLOCK)
+	if (!heap->free_block)
 	{
-		avail_block = mmap(NULL, aligned_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
-		return avail_block;
+
 	}
-	select_heap(size);
-	avail_block = first_fit(size, aligned_size);
+	avail_block = first_fit(heap, size);
 	return avail_block;
 }

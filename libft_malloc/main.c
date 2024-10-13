@@ -9,7 +9,13 @@ int	main(void)
 	p[2] = 'c';
 	p[3] = 'd';
 	p[4] = 'e';
-	char	*n = ft_realloc((void *)p, 10 * sizeof(char));
+	//char	*n = ft_realloc((void *)p, 10 * sizeof(char));
 
-	ft_free(n);
+	char	*i = ft_malloc(65 * sizeof(char));
+	char	*l = ft_malloc(1000 * sizeof(char));
+	(void)i;
+	(void)l;
+
+	show_alloc_mem();
+	//ft_free(n);
 }

@@ -16,6 +16,10 @@ SYMLINK_LIB = libft_malloc.so
 
 DIR_MALLOC = libft_malloc/
 
+DIR_LIBFT = libft/
+
+LIBFT = $(DIR_LIBFT)libft.a
+
 SRC =	create_new_heap.c	\
 		malloc.c			\
 		get_avail_block.c	\
@@ -23,12 +27,13 @@ SRC =	create_new_heap.c	\
 		free.c				\
 		main.c				\
 		realloc.c			\
+		show_alloc_mem.c	\
 
 SRCS = $(addprefix $(DIR_MALLOC), $(SRC))	\
 
 OBJS = $(SRCS:%.c=%.o)
 
-HEADER = $(DIR_MALLOC)libft_malloc.h
+HEADER = $(DIR_MALLOC)libft_malloc.h $(DIR_LIBFT)libft.h
 
 CC = gcc
 
@@ -41,19 +46,21 @@ LIBFLAGS = -fPIC -shared
 
 all: $(NAME)
 
-$(NAME): $(HEADER) $(OBJS)
-	make -C libft
+$(NAME): $(LIBFT) $(HEADER) $(OBJS)
 	$(CC) $(CFLAGS) $(LIBFLAGS) $(OBJS) -o $(NAME)
 	rm -f $(SYMLINK_LIB)
 	ln -s $(NAME) $(SYMLINK_LIB)
-	$(CC) $(CFLAGS) -L$(DIR_MALLOC) -lft_malloc_$(HOSTTYPE) -o malloc
+	$(CC) $(CFLAGS) -L$(DIR_MALLOC) -L$(DIR_LIBFT) -lft_malloc_$(HOSTTYPE) -lft -o malloc
+
+$(LIBFT):
+	make -C libft
 
 clean:
 	make clean -C libft
 	rm -rf $(OBJS)
 
 fclean: clean
-	make fclean -C libft
+	rm -rf libft/libft.a
 	rm -rf $(NAME) $(SYMLINK_LIB) malloc
 
 re: fclean all

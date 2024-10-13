@@ -4,24 +4,45 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
-add_free_block	realloc.c	/^static void	add_free_block(t_block *ptr_block, size_t realloc_size, size_t aligned_realloc_size)$/;"	f	file:
-add_new_alloc_block	get_avail_block.c	/^static t_block	*add_new_alloc_block(t_block *free_block, size_t size, size_t aligned_size)$/;"	f	file:
-allocate_heap	create_new_heap.c	/^void	allocate_heap(size_t size, int mode)$/;"	f
-check_heap_left	heap_utils.c	/^int	check_heap_left(size_t size)$/;"	f
+add_alloc_block	realloc.c	/^static void	add_alloc_block(t_block *alloc_block, t_block *realloc_block)$/;"	f	file:
+add_block_at_beginning_if_necessary	realloc.c	/^static int	add_block_at_beginning_if_necessary(t_heap_group *heap, t_block *block, t_block *tmp, int merged)$/;"	f	file:
+add_block_at_end_if_necessary	realloc.c	/^static int	add_block_at_end_if_necessary(t_heap_group *heap, t_block *block, t_block *tmp, int position)$/;"	f	file:
+add_free_block	realloc.c	/^static void	add_free_block(t_heap_group *heap, t_block *block)$/;"	f	file:
+add_heap	create_new_heap.c	/^static t_heap_group	*add_heap(size_t size)$/;"	f	file:
+add_heap_edge	create_new_heap.c	/^static int	add_heap_edge(t_heap_group *heaps, t_heap_group *new_heap)$/;"	f	file:
+add_heap_middle	create_new_heap.c	/^static void	add_heap_middle(t_heap_group *heaps, t_heap_group *new_heap, int add_status)$/;"	f	file:
+add_heap_pos_free_blocks	create_new_heap.c	/^static void	add_heap_pos_free_blocks(t_heap_group *heap_pos, t_heap_group *new_heap, size_t alloc_size)$/;"	f	file:
+add_new_alloc_block	get_avail_block.c	/^static t_block	*add_new_alloc_block(t_block *alloc_block, t_block *free_block, size_t size)$/;"	f	file:
+add_new_heap	create_new_heap.c	/^static void	add_new_heap(t_heap_group *new_heap, size_t alloc_size, size_t size)$/;"	f	file:
+add_new_heap_free_blocks	create_new_heap.c	/^static void	add_new_heap_free_blocks(t_heap_group *heap_pos, t_heap_group *new_heap, size_t alloc_size)$/;"	f	file:
+allocate_heap	create_new_heap.c	/^t_heap_group	*allocate_heap(size_t size, int mode)$/;"	f
+check_heap_left	heap_utils.c	/^t_heap_group	*check_heap_left(size_t size)$/;"	f
 check_heap_state	heap_utils.c	/^int	check_heap_state(size_t size)$/;"	f
-count_heap	heap_utils.c	/^int	count_heap(void)$/;"	f
-delete_free_block	get_avail_block.c	/^static t_block	*delete_free_block(t_block *free_block, size_t size, size_t aligned_size)$/;"	f	file:
-extend_block	realloc.c	/^static void	*extend_block(t_block *ptr_block, size_t realloc_size, size_t aligned_realloc_size)$/;"	f	file:
-find_ptr_block	realloc.c	/^static t_block	*find_ptr_block(void *ptr)$/;"	f	file:
-first_fit	get_avail_block.c	/^static void	*first_fit(size_t size, size_t aligned_size)$/;"	f	file:
-ft_free	free.c	/^void	ft_free(void *ptr)$/;"	f
+check_if_heap_contiguous	create_new_heap.c	/^static t_heap_group	*check_if_heap_contiguous(t_heap_group *new_heap, size_t alloc_size, size_t size)$/;"	f	file:
+create_heap	create_new_heap.c	/^static t_heap_group	*create_heap(size_t size)$/;"	f	file:
+delete_free_block	get_avail_block.c	/^static t_block	*delete_free_block(t_block *free_block, size_t size) \/\/raccourcir la fonction$/;"	f	file:
+extend_block	realloc.c	/^static void	*extend_block(t_heap_group *heap, t_block *ptr_block, size_t realloc_size)$/;"	f	file:
+find_heap	heap_utils.c	/^t_heap_group	*find_heap(int heap_index, int i)$/;"	f
+find_ptr_block	realloc.c	/^static t_block	*find_ptr_block(t_heap_group *heap, void *ptr)$/;"	f	file:
+first_fit	get_avail_block.c	/^static void	*first_fit(t_heap_group *heap, size_t size)$/;"	f	file:
+ft_free	free.c	/^void	ft_free(void *ptr) \/\/changer en fonction de t_heap et t_heap_group$/;"	f
 ft_malloc	malloc.c	/^void	*ft_malloc(size_t size)$/;"	f
-ft_realloc	realloc.c	/^void	*ft_realloc(void *ptr, size_t size)$/;"	f
+ft_realloc	realloc.c	/^void	*ft_realloc(void *ptr, size_t size) \/\/ tout modifier en fonction de t_heap et t_heap_group$/;"	f
 g_heap	malloc.c	/^t_heap	*g_heap = NULL;$/;"	v
-get_avail_block	get_avail_block.c	/^void	*get_avail_block(size_t size)$/;"	f
+get_avail_block	get_avail_block.c	/^void	*get_avail_block(t_heap_group *heap, size_t size)$/;"	f
+get_new_index	create_new_heap.c	/^static int	get_new_index(t_heap_group *heap, int index, int i)$/;"	f	file:
+get_required_size	realloc.c	/^static size_t	get_required_size(t_block *tmp, size_t realloc_size)$/;"	f	file:
+initialize_new_heap	create_new_heap.c	/^static void	initialize_new_heap(t_heap_group *new_heap, size_t alloc_size)$/;"	f	file:
 main	main.c	/^int	main(void)$/;"	f
-merge_blocks	free.c	/^static void	merge_blocks(t_heap *tmp_heap, t_block *tmp_block)$/;"	f	file:
-merge_blocks	realloc.c	/^static void	merge_blocks(t_block *ptr_block, int nb_blocks)$/;"	f	file:
-realloc_ptr	realloc.c	/^static void	*realloc_ptr(t_block *ptr_block, size_t realloc_size)$/;"	f	file:
-select_heap	heap_utils.c	/^void	select_heap(size_t size)$/;"	f
-shrink_block	realloc.c	/^static t_block	*shrink_block(t_block *ptr_block, size_t realloc_size, size_t aligned_realloc_size)$/;"	f	file:
+merge_blocks	free.c	/^static void	merge_blocks(t_heap_group *heap, t_block *block)$/;"	f	file:
+merge_blocks	realloc.c	/^static void	merge_blocks(t_block *block, size_t required_size)$/;"	f	file:
+merge_heaps	create_new_heap.c	/^static t_heap_group	*merge_heaps(t_heap_group *heap_pos, t_heap_group *new_heap, size_t alloc_size)$/;"	f	file:
+merge_two_consecutive_block_if_necessary	realloc.c	/^static int merge_two_consecutive_block_if_necessary(t_block *block, t_block *tmp)$/;"	f	file:
+put_realloc_block_after_alloc_block	realloc.c	/^static void	put_realloc_block_after_alloc_block(t_block *realloc_block, t_block *alloc_block)$/;"	f	file:
+put_realloc_block_before_alloc_block	realloc.c	/^static void	put_realloc_block_before_alloc_block(t_block *realloc_block, t_block *alloc_block)$/;"	f	file:
+realloc_ptr	realloc.c	/^static void	*realloc_ptr(t_heap_group *heap, t_block *ptr_block, size_t realloc_size)$/;"	f	file:
+remove_ptr_block	realloc.c	/^static void	remove_ptr_block(t_heap_group *heap, t_block *ptr_block)$/;"	f	file:
+select_heap	heap_utils.c	/^t_heap_group	*select_heap(size_t size)$/;"	f
+show_alloc_mem	show_alloc_mem.c	/^void show_alloc_mem(void)$/;"	f
+shrink_alloc_block	realloc.c	/^static t_block	*shrink_alloc_block(t_heap_group *heap, t_block *ptr_block, size_t realloc_size)$/;"	f	file:
+shrink_free_block	realloc.c	/^static t_block	*shrink_free_block(t_heap_group *heap, t_block *ptr_block, t_block *realloc_block, size_t realloc_size)$/;"	f	file:

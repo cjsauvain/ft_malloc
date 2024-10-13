@@ -1,1 +1,3 @@
-Deplacer les allocations d'une heap à l'autre si le realloc le demande (passer de TINY a SMALL ou inversement)
+- aligned_size toujours > à size
+- copy memory when reallocating
+- gérer l'indexation des heaps et des alloc/free blocks en fonction de leur heap

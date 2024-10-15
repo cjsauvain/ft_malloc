@@ -1,3 +1,4 @@
 - aligned_size toujours > à size
 - copy memory when reallocating
 - gérer l'indexation des heaps et des alloc/free blocks en fonction de leur heap
+- faire des test pour verifier les débordement mémoire (les octets supplémentaire représentant le padding pour alignement)

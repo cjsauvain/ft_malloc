@@ -85,7 +85,7 @@ void	*get_avail_block(t_heap_group *heap, size_t size)
 
 	if (!heap->free_block)
 	{
-
+		
 	}
 	avail_block = first_fit(heap, size);
 	return avail_block;

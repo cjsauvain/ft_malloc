@@ -23,7 +23,7 @@ static int	get_new_index(int index, int i)
 	return index;
 }
 
-static void	initialize_new_heap(t_heap_group *new_heap, size_t alloc_size)
+static void	initialize_new_heap(t_heap_group *new_heap, size_t alloc_size, size_t size)
 {
 	size_t	aligned_alloc_size;
 
@@ -32,6 +32,13 @@ static void	initialize_new_heap(t_heap_group *new_heap, size_t alloc_size)
 	new_heap->index = get_new_index(0, 0);
 	new_heap->aligned_size = aligned_alloc_size;
 	new_heap->alloc_block = NULL;
+	new_heap->prev = NULL;
+	new_heap->next = NULL;
+	if (size > SMALL_BLOCK)
+	{
+		new_heap->free_block = NULL;
+		return ;
+	}
 	if (alloc_size != (size_t)TINY_HEAP && alloc_size != (size_t)SMALL_HEAP)
 	{
 		new_heap->free_block = NULL;
@@ -45,21 +52,25 @@ static void	initialize_new_heap(t_heap_group *new_heap, size_t alloc_size)
 	new_heap->free_block->prev = NULL;
 }
 
+static size_t	get_alloc_size(size_t size)
+{
+	if (size <= TINY_BLOCK)
+		return TINY_HEAP;
+	else if (size > TINY_BLOCK && size <= SMALL_BLOCK)
+		return SMALL_HEAP;
+	return (size + sizeof(t_heap));
+}
+
 static t_heap_group	*create_heap(size_t size)
 {
 	t_heap_group	*new_heap;
 	size_t			alloc_size;
 
-	if (size <= TINY_BLOCK)
-		alloc_size = TINY_HEAP;
-	else if (size > TINY_BLOCK && size <= SMALL_BLOCK)
-		alloc_size = SMALL_HEAP;
-	else
-		alloc_size = size;
+	alloc_size = get_alloc_size(size);
 	new_heap = mmap(NULL, align_mem(alloc_size), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
 	if (new_heap == MAP_FAILED)
 		return NULL;
-	initialize_new_heap(new_heap, alloc_size);
+	initialize_new_heap(new_heap, alloc_size, size);
 	if (size <= TINY_BLOCK)
 		g_heap.tiny_heap = new_heap;
 	else if (size > TINY_BLOCK && size <= SMALL_BLOCK)
@@ -116,7 +127,7 @@ static void	add_new_heap(t_heap_group *new_heap, size_t alloc_size, size_t size)
 		heaps = heaps->next;
 	if (heaps)
 	{
-		initialize_new_heap(new_heap, alloc_size);
+		initialize_new_heap(new_heap, alloc_size, size);
 		add_status = add_heap_edge(heaps, new_heap);
 		add_heap_middle(heaps, new_heap, add_status);
 	}
@@ -197,20 +208,20 @@ static t_heap_group	*add_heap(size_t size)
 	t_heap_group	*heap_pos;
 	size_t			alloc_size;
 
-	if (size <= TINY_BLOCK)
-		alloc_size = TINY_HEAP;
-	else if (size > TINY_BLOCK && size <= SMALL_BLOCK)
-		alloc_size = SMALL_HEAP;
-	else
-		alloc_size = size;
+	alloc_size = get_alloc_size(size);
 	new_heap = mmap(NULL, align_mem(alloc_size), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
 	if (new_heap == MAP_FAILED)
 		return NULL;
-	heap_pos = check_if_heap_contiguous(new_heap, alloc_size, size);
-	if (heap_pos)
-		new_heap = merge_heaps(heap_pos, new_heap, alloc_size);
-	else
-		add_new_heap(new_heap, alloc_size, size);
+	if (size <= SMALL_BLOCK)
+	{
+		heap_pos = check_if_heap_contiguous(new_heap, alloc_size, size);
+		if (heap_pos)
+		{
+			new_heap = merge_heaps(heap_pos, new_heap, alloc_size);
+			return new_heap;
+		}
+	}
+	add_new_heap(new_heap, alloc_size, size);
 	return new_heap;
 }
 

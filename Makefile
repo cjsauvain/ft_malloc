@@ -20,16 +20,21 @@ DIR_LIBFT = libft/
 
 LIBFT = $(DIR_LIBFT)libft.a
 
-SRC =	create_new_heap.c	\
-		malloc.c			\
-		get_avail_block.c	\
-		heap_utils.c		\
-		free.c				\
-		main.c				\
-		realloc.c			\
-		show_alloc_mem.c	\
-		block_utils.c		\
-		merge_heaps.c		\
+SRC =	create_new_heap.c		\
+		malloc.c				\
+		get_avail_block.c		\
+		heap_utils.c			\
+		free.c					\
+		main.c					\
+		realloc.c				\
+		show_alloc_mem.c		\
+		block_utils.c			\
+		block_management.c		\
+		merge_heaps.c			\
+		shrink_alloc_block.c	\
+		shrink_free_block.c		\
+		extend_block.c			\
+		add_free_block.c		\
 
 SRCS = $(addprefix $(DIR_MALLOC), $(SRC))	\
 

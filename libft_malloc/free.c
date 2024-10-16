@@ -1,6 +1,6 @@
 #include "libft_malloc.h"
 
-static void	merge_blocks(t_heap_group *heap, t_block *block)
+/*static void	merge_blocks(t_heap_group *heap, t_block *block)
 {
 	if (block->next)
 	{
@@ -22,13 +22,14 @@ static void	merge_blocks(t_heap_group *heap, t_block *block)
 	}
 	block->size = sizeof(t_block);
 	block->aligned_size = align_mem(block->size);
-}
+}*/
 
 static void	munmap_heap(t_heap_group *heap, t_block *block, void *ptr)
 {
 	t_heap_group	*prev_heap;
 	t_heap_group	*next_heap;
 	size_t			alloc_size;
+	int				status;
 
 	alloc_size = block->size + sizeof(t_heap_group) + sizeof(t_block);
 	ptr = (void *)((char *)ptr - sizeof(t_block) - sizeof(t_heap_group));
@@ -41,18 +42,16 @@ static void	munmap_heap(t_heap_group *heap, t_block *block, void *ptr)
 
 static void	free_block(t_heap_group *heap, t_block *block, void *ptr)
 {
-	t_block	*alloc_block;
-
-	alloc_block = heap->alloc_block;
-	
+	(void)heap;
+	(void)block;
+	(void)ptr;
+	//heap->alloc_block = delete_block(block, 
 }
 
 void	ft_free(void *ptr)
 {
 	t_heap_group	*heap;
 	t_block			*block;
-	int				status;
-	size_t			alloc_size;
 
 	block = (t_block *)((char *)ptr - sizeof(t_block));
 	heap = find_heap(block->heap_index, 0);

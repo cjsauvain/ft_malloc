@@ -57,5 +57,11 @@ void		 	show_alloc_mem(void);
 t_heap_group	*find_heap(int heap_index, int i);
 t_block			*find_ptr_block(t_heap_group *heap, void *ptr);
 t_heap_group	*merge_heaps(t_heap_group *heap_pos, t_heap_group *new_heap, size_t alloc_size);
+t_block			*shrink_alloc_block(t_heap_group *heap, t_block *ptr_block, size_t realloc_size);
+t_block			*shrink_free_block(t_heap_group *heap, t_block *ptr_block, t_block *realloc_block, size_t realloc_size);
+void			*extend_block(t_heap_group *heap, t_block *ptr_block, size_t realloc_size);
+t_block			*delete_block(t_block *block, size_t size);
+t_block			*add_block(t_heap_group *heap, t_block *free_block, size_t size);
+void			add_free_block(t_heap_group *heap, t_block *block);
 
 #endif

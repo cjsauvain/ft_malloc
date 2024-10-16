@@ -3,3 +3,5 @@
 - munmap seulement les large_heap a chaque appel de free ou les tiny/small heap une fois qu'une heap est vide
 - gerer les mouvement de block entre tiny et small heap lors de realloc si necessaire
 - revoir les size des tiny, small et large block pour optimiser
+- finir la reorganisation et l'implementation de add_block et delete_block
+- verifier tous les commentaires pour voir ce qu'il reste a faire a l'interieur du code

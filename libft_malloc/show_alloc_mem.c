@@ -13,15 +13,20 @@ static size_t	display_heap(size_t size, char *size_str)
 	if (!heap)
 		return 0;
 	total_size = 0;
-	alloc_block = heap->alloc_block;
-	while (alloc_block)
+	while (heap)
 	{
-		beginning_block = (size_t *)alloc_block;
-		end_block = (size_t *)((char *)alloc_block + sizeof(t_block) + alloc_block->aligned_size);
-		ft_printf("%p - %p : %d bytes\n", beginning_block, end_block, alloc_block->size);
-		total_size += alloc_block->size;
-		alloc_block = alloc_block->next;
+		alloc_block = heap->alloc_block;
+		while (alloc_block)
+		{
+			beginning_block = (size_t *)alloc_block;
+			end_block = (size_t *)((char *)alloc_block + sizeof(t_block) + alloc_block->aligned_size);
+			ft_printf("%p - %p : %d bytes\n", beginning_block, end_block, alloc_block->size);
+			total_size += alloc_block->size;
+			alloc_block = alloc_block->next;
+		}
+		heap = heap->next;
 	}
+	ft_putchar('\n');
 	return total_size;
 }
 

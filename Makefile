@@ -28,6 +28,8 @@ SRC =	create_new_heap.c	\
 		main.c				\
 		realloc.c			\
 		show_alloc_mem.c	\
+		block_utils.c		\
+		merge_heaps.c		\
 
 SRCS = $(addprefix $(DIR_MALLOC), $(SRC))	\
 

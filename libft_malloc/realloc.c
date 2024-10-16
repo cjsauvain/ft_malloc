@@ -1,22 +1,5 @@
 #include "libft_malloc.h"
 
-static t_block	*find_ptr_block(t_heap_group *heap, void *ptr)
-{
-	t_block	*block;
-
-	while (heap)
-	{
-		block = heap->alloc_block;
-		while (block)
-		{
-			if ((char *)block + sizeof(t_block) == ptr)
-				return block;
-		}
-		heap = heap->next;
-	}
-	return NULL;
-}
-
 static int merge_two_consecutive_block_if_necessary(t_block *block, t_block *tmp)
 {
 	if (tmp && tmp->prev 

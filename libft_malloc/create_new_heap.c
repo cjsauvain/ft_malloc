@@ -19,31 +19,21 @@ static int	get_new_index(int index, int i)
 	if (i < 2)
 		index = get_new_index(index, i + 1);
 	if (!index)
-		return 1;
+		return 0;
 	return index;
 }
 
-static void	initialize_new_heap(t_heap_group *new_heap, size_t alloc_size, size_t size)
+static void	initialize_new_heap(t_heap_group *new_heap, size_t alloc_size)
 {
 	size_t	aligned_alloc_size;
 
 	aligned_alloc_size = align_mem(alloc_size);
 
-	new_heap->index = get_new_index(0, 0);
+	new_heap->index = get_new_index(0, 0) + 1;
 	new_heap->aligned_size = aligned_alloc_size;
 	new_heap->alloc_block = NULL;
 	new_heap->prev = NULL;
 	new_heap->next = NULL;
-	if (size > SMALL_BLOCK)
-	{
-		new_heap->free_block = NULL;
-		return ;
-	}
-	if (alloc_size != (size_t)TINY_HEAP && alloc_size != (size_t)SMALL_HEAP)
-	{
-		new_heap->free_block = NULL;
-		return ;
-	}
 	new_heap->free_block = (t_block *)((char *)new_heap + sizeof(t_heap_group));
 	new_heap->free_block->heap_index  = new_heap->index;
 	new_heap->free_block->size = alloc_size - sizeof(t_block) - sizeof(t_heap_group);
@@ -58,7 +48,7 @@ static size_t	get_alloc_size(size_t size)
 		return TINY_HEAP;
 	else if (size > TINY_BLOCK && size <= SMALL_BLOCK)
 		return SMALL_HEAP;
-	return (size + sizeof(t_heap));
+	return (size + sizeof(t_heap_group) + sizeof(t_block));
 }
 
 static t_heap_group	*create_heap(size_t size)
@@ -70,7 +60,7 @@ static t_heap_group	*create_heap(size_t size)
 	new_heap = mmap(NULL, align_mem(alloc_size), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
 	if (new_heap == MAP_FAILED)
 		return NULL;
-	initialize_new_heap(new_heap, alloc_size, size);
+	initialize_new_heap(new_heap, alloc_size);
 	if (size <= TINY_BLOCK)
 		g_heap.tiny_heap = new_heap;
 	else if (size > TINY_BLOCK && size <= SMALL_BLOCK)
@@ -80,13 +70,19 @@ static t_heap_group	*create_heap(size_t size)
 	return new_heap;
 }
 
-static int	add_heap_edge(t_heap_group *heaps, t_heap_group *new_heap)
+static int	add_heap_edge(t_heap_group *heaps, t_heap_group *new_heap, size_t size)
 {
 	if (heaps && !heaps->prev && new_heap < heaps)
 	{
 		new_heap->prev = NULL;
 		new_heap->next = heaps;
 		heaps->prev = new_heap;
+		if (size <= TINY_BLOCK)
+			g_heap.tiny_heap = new_heap;
+		else if (size <= SMALL_BLOCK)
+			g_heap.small_heap = new_heap;
+		else if (size > SMALL_BLOCK)
+			g_heap.large_heap = new_heap;
 		return 1;
 	}
 	else if (heaps && !heaps->next && new_heap > heaps)
@@ -127,8 +123,8 @@ static void	add_new_heap(t_heap_group *new_heap, size_t alloc_size, size_t size)
 		heaps = heaps->next;
 	if (heaps)
 	{
-		initialize_new_heap(new_heap, alloc_size, size);
-		add_status = add_heap_edge(heaps, new_heap);
+		initialize_new_heap(new_heap, alloc_size);
+		add_status = add_heap_edge(heaps, new_heap, size);
 		add_heap_middle(heaps, new_heap, add_status);
 	}
 }
@@ -147,59 +143,6 @@ static t_heap_group	*check_if_heap_contiguous(t_heap_group *new_heap, size_t all
 		heaps = heaps->next;
 	}
 	return NULL;
-}
-
-static void	add_new_heap_free_blocks(t_heap_group *heap_pos, t_heap_group *new_heap, size_t alloc_size)
-{
-	t_block	*tmp_free;
-	size_t	aligned_alloc_size;
-
-	tmp_free = heap_pos->free_block;
-	while (tmp_free && tmp_free->next)
-		tmp_free = tmp_free->next;
-	if (tmp_free)
-	{
-		aligned_alloc_size = align_mem(alloc_size);
-		tmp_free->next = (t_block *)new_heap;
-		tmp_free->next->prev = tmp_free;
-		tmp_free->next->next = NULL;
-		tmp_free->next->size = alloc_size - sizeof(t_block);
-		tmp_free->next->aligned_size = aligned_alloc_size - sizeof(t_block);
-		tmp_free->next->heap_index = heap_pos->index;
-		heap_pos->aligned_size += aligned_alloc_size;
-	}
-}
-
-static void	add_heap_pos_free_blocks(t_heap_group *heap_pos, t_heap_group *new_heap, size_t alloc_size)
-{
-	size_t	aligned_alloc_size;
-
-	if (heap_pos->prev)
-		heap_pos->prev->next = new_heap;
-	if (heap_pos->next)
-		heap_pos->next->prev = new_heap;
-
-	aligned_alloc_size = align_mem(alloc_size);
-	*new_heap = *heap_pos;
-	new_heap->aligned_size += aligned_alloc_size;
-	new_heap->free_block = (t_block *)((char *)new_heap + sizeof(t_heap_group));
-	new_heap->free_block->heap_index = heap_pos->index;
-	new_heap->free_block->size = alloc_size - sizeof(t_heap_group) - sizeof(t_block);
-	new_heap->free_block->aligned_size = aligned_alloc_size - sizeof(t_heap_group) - sizeof(t_block);
-	new_heap->free_block->next = heap_pos->free_block;
-	new_heap->free_block->prev = NULL;
-	heap_pos->free_block->prev = new_heap->free_block;
-}
-
-static t_heap_group	*merge_heaps(t_heap_group *heap_pos, t_heap_group *new_heap, size_t alloc_size)
-{
-	if (heap_pos < new_heap)
-	{
-		add_new_heap_free_blocks(heap_pos, new_heap, alloc_size);
-		return heap_pos;
-	}
-	add_heap_pos_free_blocks(heap_pos, new_heap, alloc_size);
-	return new_heap;
 }
 
 static t_heap_group	*add_heap(size_t size)

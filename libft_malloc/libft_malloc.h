@@ -55,5 +55,7 @@ void			ft_free(void *ptr);
 void			*ft_realloc(void *ptr, size_t size);
 void		 	show_alloc_mem(void);
 t_heap_group	*find_heap(int heap_index, int i);
+t_block			*find_ptr_block(t_heap_group *heap, void *ptr);
+t_heap_group	*merge_heaps(t_heap_group *heap_pos, t_heap_group *new_heap, size_t alloc_size);
 
 #endif

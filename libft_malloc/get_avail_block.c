@@ -83,9 +83,11 @@ void	*get_avail_block(t_heap_group *heap, size_t size)
 {
 	void	*avail_block;
 
-	if (!heap->free_block)
+	if (size > SMALL_BLOCK)
 	{
-		
+		heap->alloc_block = heap->free_block;
+		heap->free_block = NULL;
+		return (void *)((char *)heap->alloc_block + sizeof(t_block));
 	}
 	avail_block = first_fit(heap, size);
 	return avail_block;

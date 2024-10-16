@@ -14,9 +14,11 @@ void	*ft_malloc(size_t size)
 	if (!heap_state)
 		heap = allocate_heap(size, 0);
 	else
+	{
 		heap = check_heap_left(size);
-	if (!heap && !heap_state)
-		heap = allocate_heap(size, 1);
+		if (!heap)
+			heap = allocate_heap(size, 1);
+	}
 	if (!heap)
 		return NULL;
 	block = get_avail_block(heap, size);

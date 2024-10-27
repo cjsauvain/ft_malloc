@@ -1,5 +1,4 @@
-#include "../libft/libft.h"
-#include "libft_malloc.h"
+#include "libft_malloc/include/libft_malloc.h"
 
 int	main(void)
 {
@@ -7,7 +6,6 @@ int	main(void)
 	char	*b = ft_malloc(30 * sizeof(char));
 	char	*c = ft_malloc(22 * sizeof(char));
 	char	*d = ft_malloc(57 * sizeof(char));
-	//char	*n = ft_realloc((void *)p, 10 * sizeof(char));
 
 	char	*e = ft_malloc(65 * sizeof(char));
 	char	*f = ft_malloc(122 * sizeof(char));
@@ -20,6 +18,9 @@ int	main(void)
 	char	*l = ft_malloc(15166 * sizeof(char));
 	char	*m = ft_malloc(15665 * sizeof(char));
 	char	*n = ft_malloc(6667 * sizeof(char));
+
+
+	char	*reall = ft_realloc(n, 54 * sizeof(char));
 	(void)a;
 	(void)b;
 	(void)c;
@@ -33,8 +34,22 @@ int	main(void)
 	(void)k;
 	(void)l;
 	(void)m;
+	(void)reall;
 
 
 	show_alloc_mem();
+	ft_free(a);
+	ft_free(b);
+	ft_free(c);
+	ft_free(d);
+	ft_free(d);
+	ft_free(e);
+	ft_free(f);
+	ft_free(h);
+	ft_free(j);
+	ft_free(k);
+	ft_free(l);
+	ft_free(m);
 	ft_free(n);
+	ft_free(reall);
 }

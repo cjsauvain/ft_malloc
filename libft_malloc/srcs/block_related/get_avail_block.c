@@ -9,10 +9,8 @@ static void	*first_fit(t_heap_group *heap, size_t size)
 	free_block = heap->free_block;
 	while (free_block && free_block->size < size)
 		free_block = free_block->next;
-	if (!free_block) //ne pas retourner null mais faire une nouvelle allocation
-		return NULL;
 	heap->free_block = delete_block(free_block, size);
-	block = add_block(heap, free_block, size);
+	block = add_alloc_block(heap, free_block, size);
 	return (void *)((char *)block + sizeof(t_block));
 }
 

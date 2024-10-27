@@ -9,9 +9,12 @@ static size_t	display_heap(size_t size, char *size_str)
 	size_t			total_size;
 	
 	heap = select_heap(size);
-	ft_printf("%s : %p\n", size_str, heap);
+	ft_printf(BMAG"%s : %p\n"reset, size_str, heap);
 	if (!heap)
+	{
+		ft_putchar('\n');
 		return 0;
+	}
 	total_size = 0;
 	while (heap)
 	{
@@ -34,8 +37,8 @@ void show_alloc_mem(void)
 {
 	size_t	total_size;
 
-	total_size = display_heap(TINY_BLOCK, "TINY");
+	total_size = display_heap(TINY_BLOCK, "\nTINY");
 	total_size += display_heap(SMALL_BLOCK, "SMALL");
 	total_size += display_heap(SMALL_BLOCK + 1, "LARGE");
-	ft_printf("Total : %d bytes\n", total_size);
+	ft_printf(URED"Total : %d bytes\n"reset, total_size);
 }

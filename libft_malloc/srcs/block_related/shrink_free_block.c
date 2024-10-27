@@ -34,7 +34,7 @@ static void	put_realloc_block_after_alloc_block(t_block *realloc_block, t_block 
 	}
 }
 
-static void	add_alloc_block(t_block *alloc_block, t_block *realloc_block)
+static void	add_realloc_block(t_block *alloc_block, t_block *realloc_block)
 {
 	while (alloc_block && alloc_block->next && realloc_block > alloc_block)
 		alloc_block = alloc_block->next;
@@ -77,7 +77,7 @@ t_block	*shrink_free_block(t_heap_group *heap, t_block *ptr_block, t_block *real
 	realloc_block->size = realloc_size;
 	realloc_block->aligned_size = align_mem(realloc_size);
 
-	add_alloc_block(heap->alloc_block, realloc_block); //tester tous les cas particuliers + revoir implémentation
+	add_realloc_block(heap->alloc_block, realloc_block);
 	remove_ptr_block(heap, ptr_block);
 
 	return realloc_block;

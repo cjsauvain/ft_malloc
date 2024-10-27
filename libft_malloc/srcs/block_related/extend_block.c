@@ -50,9 +50,11 @@ void	*extend_block(t_heap_group *heap, t_block *ptr_block, size_t realloc_size)
 	else
 	{
 		new_ptr = ft_malloc(realloc_size);
-		ptr_block->prev->next = ptr_block->next; //ajouter condition if (ptr_block->prev)
-		ptr_block->next->prev = ptr_block->prev; //ajouter condition if (ptr_block->next)
+		if (ptr_block->prev)
+			ptr_block->prev->next = ptr_block->next;
+		if (ptr_block->next)
+			ptr_block->next->prev = ptr_block->prev;
 	}
-	add_free_block(heap, ptr_block); //tester tous les cas particuliers + revoir implémentation
+	add_free_block(heap, ptr_block);
 	return new_ptr;
 }

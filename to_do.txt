@@ -2,6 +2,11 @@
 - faire des test pour verifier les débordement mémoire (les octets supplémentaire représentant le padding pour alignement)
 - revoir les size des tiny, small et large block pour optimiser
 - Commentaire : *heap_related/merge_heaps.c
+			
+			|
+			| détection du problème : heap_related/merge_heaps.c
+			V
+
 - gerer le cas quand j'appelle delete_block dans get_avail_block.c sur le dernier block de free_block :
 	Actuellement, delete_block renvoie NULL mais ducoup je perd les octets alloué pour les métadonnées -> leak
 	Bien s'assurer que je change la fonction delete_block pour remédier a ca mais également réadapter toutes les

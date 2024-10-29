@@ -3,3 +3,5 @@
 - faire mes test valgrind
 
 -merge les block dans delete block dans delete_whole_block et checker dans d'autres fonctions si j'ai oublié de merger pour la défragmentation
+
+- verifier la norme concernant le nombre de ligne par fonctions et le nombre de caractères par lignes

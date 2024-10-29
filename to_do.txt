@@ -1,7 +1,5 @@
-- faire des test pour verifier les débordement mémoire (les octets supplémentaire représentant le padding pour alignement)
-
 - revoir les size des tiny, small et large block pour optimiser
 
-- align_mem sur tous les aligned_size +|- sizeof(***);
+- faire mes test valgrind
 
-- checker si je fais bien des check malloc == NULL
+-merge les block dans delete block dans delete_whole_block et checker dans d'autres fonctions si j'ai oublié de merger pour la défragmentation

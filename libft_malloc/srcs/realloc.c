@@ -14,22 +14,29 @@ static int	check_rezone_necessity(size_t size_ptr, size_t size_realloc)
 
 static void	*realloc_ptr(t_heap_group *heap, t_block *ptr_block, size_t realloc_size)
 {
-	void	*new_ptr = ptr_block;
+	void	*new_ptr;
+	void	*ptr;
 
+	new_ptr = ptr_block;
+	ptr = (char *)ptr_block + sizeof(t_block);
 	if (ptr_block->size > realloc_size)
 		new_ptr = shrink_alloc_block(heap, ptr_block, realloc_size);
 	else if (ptr_block->size < realloc_size)
 		new_ptr = extend_block(heap, ptr_block, realloc_size);
+	if (new_ptr)
+		ft_memmove(new_ptr, ptr, ptr_block->size);
 	return new_ptr;
 }
 
-static void	*rezone_allocation(void *ptr, size_t size)
+static void	*rezone_allocation(t_block *ptr_block, void *ptr, size_t size)
 {
 	void	*new_ptr;
 
-	ft_free(ptr);
 	new_ptr = ft_malloc(size);
-
+	if (!new_ptr)
+		return NULL;
+	ft_memmove(new_ptr, ptr, ptr_block->size);
+	ft_free(ptr);
 	return new_ptr;
 }
 
@@ -50,7 +57,7 @@ void	*ft_realloc(void *ptr, size_t size)
 		if (!heap)
 			return NULL;
 		if (check_rezone_necessity(block->size, size))
-			new_ptr = rezone_allocation(ptr, size);
+			new_ptr = rezone_allocation(block, ptr, size);
 		else
 			new_ptr = realloc_ptr(heap, block, size);
 	}

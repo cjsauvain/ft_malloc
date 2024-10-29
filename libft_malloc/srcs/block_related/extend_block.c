@@ -8,7 +8,7 @@ static void	merge_blocks(t_block *block, size_t required_size)
 	while (block && required_size)
 	{
 		block->prev->size += block->size + sizeof(t_block);
-		block->prev->aligned_size += block->aligned_size + sizeof(t_block);
+		block->prev->aligned_size = align_mem(block->prev->size);
 		block->prev->next = block->next;
 		block = block->prev;
 		required_size -= block->size;

@@ -5,12 +5,12 @@ static void add_block_in_middle(t_block *block, t_block *tmp)
 	if ((char *)tmp->prev + tmp->prev->aligned_size + sizeof(t_block) == (char *)block)
 	{
 		tmp->prev->size += block->size + sizeof(t_block);
-		tmp->prev->aligned_size += block->aligned_size + sizeof(t_block);
+		tmp->prev->aligned_size = align_mem(tmp->prev->size);
 	}
 	else if ((char *)block + block->aligned_size + sizeof(t_block) == (char *)tmp)
 	{
 		block->size += tmp->size + sizeof(t_block);
-		block->aligned_size += tmp->aligned_size + sizeof(t_block);
+		block->aligned_size = align_mem(block->size);
 		block->prev = tmp->prev;
 		block->next = tmp->next;
 		if (tmp->prev)
@@ -33,7 +33,7 @@ static t_block	*add_block_at_beginning(t_block *block, t_block *tmp)
 	if ((char *)block + block->aligned_size + sizeof(t_block) == (char *)tmp)
 	{
 		block->size += tmp->size;
-		block->aligned_size += tmp->aligned_size;
+		block->aligned_size = align_mem(block->size);
 		block->next = tmp->next;
 		block->prev = NULL;
 		if (tmp->next)
@@ -51,7 +51,7 @@ static void	add_block_at_end(t_block *block, t_block *tmp)
 	if ((char *)tmp + tmp->aligned_size + sizeof(t_block) == (char *)block)
 	{
 		tmp->size += block->size;
-		tmp->aligned_size += block->aligned_size;
+		tmp->aligned_size = align_mem(tmp->size);
 		return ;
 	}
 	block->next = NULL;

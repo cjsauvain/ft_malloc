@@ -9,7 +9,7 @@ static t_block	*delete_whole_block(t_block *block)
 	else if ((char *)block->prev + block->prev->aligned_size + sizeof(t_block) == (char *)block->next)
 	{
 		block->prev->size += (block->next->size + sizeof(t_block));
-		block->prev->aligned_size += (block->next->aligned_size + sizeof(t_block));
+		block->prev->aligned_size = align_mem(block->prev->size);
 		block->prev->next = block->next->next;
 	}
 	else
@@ -22,19 +22,19 @@ static t_block	*delete_whole_block(t_block *block)
 	return block;
 }
 
-static void	update_deleted_part(t_block *block, size_t size, size_t aligned_size)
+static void	update_deleted_part(t_block *block, size_t size)
 {
 	block->size = size;
-	block->aligned_size = aligned_size;
+	block->aligned_size = align_mem(block->size);
 }
 
-static t_block	*update_left_part(t_block *block, size_t size, size_t aligned_size)
+static t_block	*update_left_part(t_block *block, size_t size)
 {
 	t_block	*tmp;
 
-	tmp = (t_block *)((char *)block + sizeof(t_block) + aligned_size);
+	tmp = (t_block *)((char *)block + sizeof(t_block) + align_mem(size));
 	tmp->size = block->size - size;
-	tmp->aligned_size = block->aligned_size - aligned_size;
+	tmp->aligned_size = align_mem(tmp->size);
 	if (block->prev)
 		block->prev->next = tmp;
 	if (block->next)
@@ -47,11 +47,9 @@ static t_block	*update_left_part(t_block *block, size_t size, size_t aligned_siz
 static t_block	*delete_partially(t_block *block, size_t size)
 {
 	t_block	*tmp;
-	size_t	aligned_size;
 
-	aligned_size = align_mem(size);
-	tmp = update_left_part(block, size, aligned_size);
-	update_deleted_part(block, size, aligned_size);
+	tmp = update_left_part(block, size);
+	update_deleted_part(block, size);
 	if (!tmp->prev)
 		return tmp;
 	while (block && block->prev)

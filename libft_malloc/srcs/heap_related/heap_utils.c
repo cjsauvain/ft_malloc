@@ -40,12 +40,13 @@ t_heap_group	*find_heap(t_block *block, int i)
 static size_t	get_required_size(t_block *heap_free, size_t size)
 {
 	size_t	required_size;
-	size_t	offset;
+	size_t	offset = 0;
 
 	required_size = 0;
 	while (heap_free && required_size < size)
 	{
-		offset = heap_free->prev->aligned_size + sizeof(t_block);
+		if (heap_free->prev)
+			offset = heap_free->prev->aligned_size + sizeof(t_block);
 		if (!heap_free->prev)
 			required_size += heap_free->size;
 		else if ((char *)heap_free->prev + offset == (char *)heap_free)

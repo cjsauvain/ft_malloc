@@ -2,13 +2,14 @@
 
 static t_block	*delete_whole_block(t_block *block, int merge_req)
 {
-	size_t	offset;
+	size_t	offset = 0;
 
 	if (!block->prev && block->next)
 		block->next->prev = NULL;
 	else if (!block->prev)
 		return NULL;
-	offset = block->prev->aligned_size + sizeof(t_block);
+	if (block->prev)
+		offset = block->prev->aligned_size + sizeof(t_block);
 	if (merge_req && (char *)block->prev + offset == (char *)block->next)
 	{
 		block->prev->size += (block->next->size + sizeof(t_block));
@@ -17,8 +18,10 @@ static t_block	*delete_whole_block(t_block *block, int merge_req)
 	}
 	else
 	{
-		block->prev->next = block->next;
-		block->next->prev = block->prev;
+		if (block->prev)
+			block->prev->next = block->next;
+		if (block->next)
+			block->next->prev = block->prev;
 	}
 	while (block && block->prev)
 		block = block->prev;

@@ -2,9 +2,10 @@
 
 static void	add_block_in_middle(t_block *block, t_block *tmp)
 {
-	size_t	offset;
+	size_t	offset = 0;
 
-	offset = tmp->prev->aligned_size + sizeof(t_block);
+	if (tmp->prev)
+		offset = tmp->prev->aligned_size + sizeof(t_block);
 	if ((char *)tmp->prev + offset == (char *)block)
 	{
 		tmp->prev->size += block->size + sizeof(t_block);
@@ -78,9 +79,9 @@ void	add_free_block(t_heap_group *heap, t_block *block)
 		tmp = tmp->next;
 	if (!tmp)
 		heap->free_block = add_block_as_only_block(block);
-	else if (tmp && !tmp->prev && block < tmp)
+	else if (!tmp->prev && block < tmp)
 		heap->free_block = add_block_at_beginning(block, tmp);
-	else if (tmp && !tmp->next && block > tmp)
+	else if (!tmp->next && block > tmp)
 		add_block_at_end(block, tmp);
 	else
 		add_block_in_middle(block, tmp);

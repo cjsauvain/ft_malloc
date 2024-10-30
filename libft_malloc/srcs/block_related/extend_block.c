@@ -18,14 +18,16 @@ static void	merge_blocks(t_block *block, size_t required_size)
 static size_t	get_required_size(t_block *tmp, size_t realloc_size)
 {
 	size_t	required_size;
-	size_t	offset;
+	size_t	offset = 0;
 
 	required_size = 0;
 	while (tmp)
 	{
-		offset = tmp->prev->aligned_size + sizeof(t_block);
-		if (!tmp-> prev
-			|| (char *)tmp->prev + offset == (char *)tmp)
+		if (tmp->prev)
+			offset = tmp->prev->aligned_size + sizeof(t_block);
+		if (!tmp->prev)
+			required_size += tmp->size;
+		else if ((char *)tmp->prev + offset == (char *)tmp)
 			required_size += tmp->size;
 		else
 			required_size = 0;

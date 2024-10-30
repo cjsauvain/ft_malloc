@@ -26,7 +26,6 @@ t_heap_group	*find_heap(t_block *block, int i)
 		heap = g_heap.large_heap;
 	while (heap)
 	{
-		//check if block exist in a function
 		if (check_if_block_is_allocated(heap, block))
 			break;
 		heap = heap->next;
@@ -38,33 +37,41 @@ t_heap_group	*find_heap(t_block *block, int i)
 	return heap;
 }
 
+static size_t	get_required_size(t_block *heap_free, size_t size)
+{
+	size_t	required_size;
+	size_t	offset;
+
+	required_size = 0;
+	while (heap_free && required_size < size)
+	{
+		offset = heap_free->prev->aligned_size + sizeof(t_block);
+		if (!heap_free->prev)
+			required_size += heap_free->size;
+		else if ((char *)heap_free->prev + offset == (char *)heap_free)
+			required_size += heap_free->size;
+		else
+			required_size = 0;
+		heap_free = heap_free->next;
+	}
+	return required_size;
+}
+
 t_heap_group	*check_heap_left(size_t size)
 {
-	t_block			*tmp;
 	t_heap_group	*heap;
 	size_t			required_size;
 
 	if (size > SMALL_BLOCK)
 		return NULL;
 	heap = select_heap(size);
-	while (heap)
+	required_size = 0;
+	while (heap && required_size < size)
 	{
-		required_size = 0;
-		tmp = heap->free_block;
-		while (tmp && required_size <= size)
-		{
-			if (!tmp->prev 
-				|| (char *)tmp->prev + tmp->prev->aligned_size + sizeof(t_block) == (char *)tmp)
-				required_size += tmp->size;
-			else
-				required_size = 0;
-			tmp = tmp->next;
-		}
-		if (required_size >= size)
-			return heap;
+		required_size = get_required_size(heap->free_block, size);
 		heap = heap->next;
 	}
-	return NULL;
+	return heap;
 }
 
 int	check_heap_state(size_t size)
@@ -88,12 +95,16 @@ t_heap_group	*select_heap(size_t size)
 
 void	initialize_new_heap(t_heap_group *new_heap, size_t alloc_size)
 {
+	size_t	metadata_size;
+
+	metadata_size = sizeof(t_block) - sizeof(t_heap_group);
+
 	new_heap->aligned_size = align_mem(alloc_size);
 	new_heap->alloc_block = NULL;
 	new_heap->prev = NULL;
 	new_heap->next = NULL;
 	new_heap->free_block = (t_block *)((char *)new_heap + sizeof(t_heap_group));
-	new_heap->free_block->size = alloc_size - sizeof(t_block) - sizeof(t_heap_group);
+	new_heap->free_block->size = alloc_size - metadata_size;
 	new_heap->free_block->aligned_size = align_mem(new_heap->free_block->size);
 	new_heap->free_block->next = NULL;
 	new_heap->free_block->prev = NULL;

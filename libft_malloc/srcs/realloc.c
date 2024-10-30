@@ -12,7 +12,8 @@ static int	check_rezone_necessity(size_t size_ptr, size_t size_realloc)
 	return 0;
 }
 
-static void	*realloc_ptr(t_heap_group *heap, t_block *ptr_block, size_t realloc_size)
+static void	*realloc_ptr(t_heap_group *heap, t_block *ptr_block, \
+	size_t realloc_size)
 {
 	void	*new_ptr;
 	void	*ptr;
@@ -42,10 +43,11 @@ static void	*rezone_allocation(t_block *ptr_block, void *ptr, size_t size)
 
 void	*ft_realloc(void *ptr, size_t size)
 {
-	void			*new_ptr = NULL;
+	void			*new_ptr;
 	t_block			*block;
 	t_heap_group	*heap;
 
+	new_ptr = NULL;
 	if (!ptr)
 		new_ptr = ft_malloc(size);
 	else if (!size)

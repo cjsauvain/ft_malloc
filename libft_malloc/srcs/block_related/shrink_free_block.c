@@ -1,6 +1,7 @@
 #include "libft_malloc.h"
 
-static void	put_realloc_block_before_alloc_block(t_block *realloc_block, t_block *alloc_block)
+static void	put_realloc_block_before_alloc_block(t_block *realloc_block, \
+	t_block *alloc_block)
 {
 	if (!alloc_block->prev)
 	{
@@ -17,7 +18,8 @@ static void	put_realloc_block_before_alloc_block(t_block *realloc_block, t_block
 	}
 }
 
-static void	put_realloc_block_after_alloc_block(t_block *realloc_block, t_block *alloc_block)
+static void	put_realloc_block_after_alloc_block(t_block *realloc_block, \
+	t_block *alloc_block)
 {
 	if (!alloc_block->next)
 	{
@@ -38,6 +40,7 @@ static void	add_realloc_block(t_block *alloc_block, t_block *realloc_block)
 {
 	while (alloc_block && alloc_block->next && realloc_block > alloc_block)
 		alloc_block = alloc_block->next;
+
 	if (realloc_block < alloc_block)
 		put_realloc_block_before_alloc_block(realloc_block, alloc_block);
 	else
@@ -64,13 +67,16 @@ static void	remove_ptr_block(t_heap_group *heap, t_block *ptr_block)
 	}
 }
 
-t_block	*shrink_free_block(t_heap_group *heap, t_block *ptr_block, t_block *realloc_block, size_t realloc_size)
+t_block	*shrink_free_block(t_heap_group *heap, t_block *ptr_block, \
+	t_block *realloc_block, size_t realloc_size)
 {
 	t_block	*tmp_block;
 	size_t	aligned_realloc_size;
+	size_t	offset;
 
 	aligned_realloc_size = align_mem(realloc_size);
-	tmp_block = (t_block *)((char *)realloc_block + sizeof(t_block) + aligned_realloc_size);
+	offset = aligned_realloc_size + sizeof(t_block);
+	tmp_block = (t_block *)((char *)realloc_block + offset);
 	tmp_block->size = realloc_block->size - realloc_size - sizeof(t_block);
 	tmp_block->aligned_size = align_mem(tmp_block->size);
 	heap->free_block = tmp_block;

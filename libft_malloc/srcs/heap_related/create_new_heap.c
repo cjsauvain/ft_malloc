@@ -6,7 +6,8 @@ t_heap_group	*create_heap(size_t size)
 	size_t			alloc_size;
 
 	alloc_size = get_alloc_size(size);
-	new_heap = mmap(NULL, align_mem(alloc_size), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
+	new_heap = mmap(NULL, align_mem(alloc_size), \
+		PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
 	if (new_heap == MAP_FAILED)
 		return NULL;
 	initialize_new_heap(new_heap, alloc_size);

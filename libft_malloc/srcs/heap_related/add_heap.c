@@ -1,6 +1,7 @@
 #include "libft_malloc.h"
 
-static void	add_new_heap(t_heap_group *new_heap, size_t alloc_size, size_t size)
+static void	add_new_heap(t_heap_group *new_heap, \
+	size_t alloc_size, size_t size)
 {
 	t_heap_group	*heaps;
 
@@ -15,16 +16,19 @@ static void	add_new_heap(t_heap_group *new_heap, size_t alloc_size, size_t size)
 	}
 }
 
-static t_heap_group	*check_if_heap_contiguous(t_heap_group *new_heap, size_t alloc_size, size_t size)
+static t_heap_group	*check_if_heap_contiguous(t_heap_group *new_heap, \
+	size_t alloc_size, size_t size)
 {
 	t_heap_group	*heaps;
+	size_t			offset;
 
 	heaps = select_heap(size);
 	while (heaps)
 	{
+		offset = heaps->aligned_size + sizeof(t_heap_group);
 		if ((char *)new_heap + alloc_size == (char *)heaps)
 			return heaps;
-		else if ((char *)heaps + heaps->aligned_size + sizeof(t_heap_group) == (char *)new_heap)
+		else if ((char *)heaps + offset == (char *)new_heap)
 			return heaps;
 		heaps = heaps->next;
 	}
@@ -38,7 +42,8 @@ t_heap_group	*add_heap(size_t size)
 	size_t			alloc_size;
 
 	alloc_size = get_alloc_size(size);
-	new_heap = mmap(NULL, align_mem(alloc_size), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
+	new_heap = mmap(NULL, align_mem(alloc_size), \
+		PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
 	if (new_heap == MAP_FAILED)
 		return NULL;
 	if (size <= SMALL_BLOCK)

@@ -18,12 +18,14 @@ static void	merge_blocks(t_block *block, size_t required_size)
 static size_t	get_required_size(t_block *tmp, size_t realloc_size)
 {
 	size_t	required_size;
+	size_t	offset;
 
 	required_size = 0;
 	while (tmp)
 	{
-		if (!tmp-> prev 
-			|| (char *)tmp->prev + tmp->prev->aligned_size + sizeof(t_block) == (char *)tmp)
+		offset = tmp->prev->aligned_size + sizeof(t_block);
+		if (!tmp-> prev
+			|| (char *)tmp->prev + offset == (char *)tmp)
 			required_size += tmp->size;
 		else
 			required_size = 0;
@@ -34,7 +36,8 @@ static size_t	get_required_size(t_block *tmp, size_t realloc_size)
 	return 0;
 }
 
-void	*extend_block(t_heap_group *heap, t_block *ptr_block, size_t realloc_size)
+void	*extend_block(t_heap_group *heap, t_block *ptr_block, \
+	size_t realloc_size)
 {
 	t_block	*free_block;
 	void	*new_ptr;

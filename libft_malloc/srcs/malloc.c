@@ -4,10 +4,11 @@ t_heap	g_heap = {};
 
 void	*ft_malloc(size_t size)
 {
-	t_heap_group	*heap = NULL;
+	t_heap_group	*heap;
 	void			*block;
 	int				heap_state;
 
+	heap = NULL;
 	if (!size)
 		return NULL;
 	heap_state = check_heap_state(size);

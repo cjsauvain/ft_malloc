@@ -1,6 +1,5 @@
 #include "libft_malloc.h"
 
-
 static void	*first_fit(t_heap_group *heap, size_t size)
 {
 	t_block	*free_block;
@@ -9,7 +8,7 @@ static void	*first_fit(t_heap_group *heap, size_t size)
 	free_block = heap->free_block;
 	while (free_block && free_block->size < size)
 		free_block = free_block->next;
-	heap->free_block = delete_block(free_block, size);
+	heap->free_block = delete_block(free_block, size, 1);
 	block = add_alloc_block(heap, free_block, size);
 	return (void *)((char *)block + sizeof(t_block));
 }

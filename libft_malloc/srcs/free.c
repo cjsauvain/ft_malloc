@@ -22,7 +22,7 @@ static void	munmap_heap(t_heap_group *heap, t_block *block)
 {
 	t_heap_group	*prev_heap;
 	t_heap_group	*next_heap;
-	void 			*ptr;
+	void			*ptr;
 	size_t			alloc_size;
 	int				status;
 
@@ -37,7 +37,7 @@ static void	munmap_heap(t_heap_group *heap, t_block *block)
 
 static void	free_block(t_heap_group *heap, t_block *block)
 {
-	heap->alloc_block = delete_block(block, block->size);
+	heap->alloc_block = delete_block(block, block->size, 0);
 	add_free_block(heap, block);
 }
 

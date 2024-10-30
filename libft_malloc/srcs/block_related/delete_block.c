@@ -1,12 +1,15 @@
 #include "libft_malloc.h"
 
-static t_block	*delete_whole_block(t_block *block)
+static t_block	*delete_whole_block(t_block *block, int merge_req)
 {
+	size_t	offset;
+
 	if (!block->prev && block->next)
 		block->next->prev = NULL;
 	else if (!block->prev)
 		return NULL;
-	else if ((char *)block->prev + block->prev->aligned_size + sizeof(t_block) == (char *)block->next)
+	offset = block->prev->aligned_size + sizeof(t_block);
+	if (merge_req && (char *)block->prev + offset == (char *)block->next)
 	{
 		block->prev->size += (block->next->size + sizeof(t_block));
 		block->prev->aligned_size = align_mem(block->prev->size);
@@ -57,12 +60,12 @@ static t_block	*delete_partially(t_block *block, size_t size)
 	return block;
 }
 
-t_block	*delete_block(t_block *block, size_t size)
+t_block	*delete_block(t_block *block, size_t size, int merge_req)
 {
 	t_block	*front_block;
 
 	if (block->size == size)
-		front_block = delete_whole_block(block);
+		front_block = delete_whole_block(block, merge_req);
 	else
 		front_block = delete_partially(block, size);
 	return front_block;

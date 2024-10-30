@@ -1,6 +1,7 @@
 #include "libft_malloc.h"
 
-static t_block	*update_alloc_blocks(t_block *alloc_block, t_block *free_block, size_t size)
+static t_block	*update_alloc_blocks(t_block *alloc_block, \
+	t_block *free_block, size_t size)
 {
 	t_block	*tmp;
 
@@ -34,4 +35,3 @@ t_block	*add_alloc_block(t_heap_group *heap, t_block *free_block, size_t size)
 		heap->alloc_block = alloc_block;
 	return alloc_block;
 }
-

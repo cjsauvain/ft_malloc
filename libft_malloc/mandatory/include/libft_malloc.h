@@ -1,5 +1,5 @@
-#ifndef MALLOC_H
-# define MALLOC_H
+#ifndef LIBFT_MALLOC_H
+# define LIBFT_MALLOC_H
 
 # include <sys/mman.h>
 # include <unistd.h>

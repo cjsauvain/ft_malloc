@@ -1,4 +1,5 @@
-#include "libft_malloc/include/libft_malloc.h"
+#include "libft_malloc/mandatory/include/libft_malloc.h"
+//#include "libft_malloc/bonus/include/libft_malloc_bonus.h"
 
 int	main(void)
 {

@@ -38,18 +38,14 @@ SRC_BLOCK =	get_avail_block		\
 SRCS_BLOCK = $(addprefix block_related/, $(SRC_BLOCK))
 
 SRC_HEAP =	add_heap		\
-			allocate_heap	\
 			create_new_heap	\
 			heap_utils		\
 			merge_heaps		\
 
 SRCS_HEAP = $(addprefix heap_related/, $(SRC_HEAP))
 
-SRCS_SHOW_MEM =	show_mem/show_alloc_mem
-
 SRC =	$(SRCS_BLOCK)		\
 		$(SRCS_HEAP)		\
-		$(SRCS_SHOW_MEM)	\
 		malloc				\
 		realloc				\
 		free				\
@@ -77,11 +73,14 @@ LIBFLAGS = -fPIC -shared
 ifdef BONUS
 			DIR_INCLUDE = $(DIR_MALLOC)/bonus/include
 			HEADER += $(DIR_INCLUDE)/libft_malloc_bonus.h
-			SRCS = $(addsuffix _bonus.c, $(addprefix $(DIR_SRCS_BONUS)/, $(SRC)))
+			SRCS =	$(addsuffix _bonus.c, $(addprefix $(DIR_SRCS_BONUS)/, $(SRC))) \
+					$(DIR_SRCS_BONUS)/show_mem_hexdump/show_mem_hexdump_bonus.c
+
 else
 			DIR_INCLUDE = $(DIR_MALLOC)/mandatory/include
 			HEADER += $(DIR_INCLUDE)/libft_malloc.h
-			SRCS = $(addsuffix .c, $(addprefix $(DIR_SRCS)/, $(SRC)))
+			SRCS =	$(addsuffix .c, $(addprefix $(DIR_SRCS)/, $(SRC))) \
+					$(DIR_SRCS)/show_mem/show_alloc_mem.c
 endif
 
 %.o: %.c

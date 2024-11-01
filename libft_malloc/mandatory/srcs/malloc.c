@@ -13,12 +13,12 @@ void	*ft_malloc(size_t size)
 		return NULL;
 	heap_state = check_heap_state(size);
 	if (!heap_state)
-		heap = allocate_heap(size, 0);
+		heap = create_heap(size);
 	else
 	{
 		heap = check_heap_left(size);
 		if (!heap)
-			heap = allocate_heap(size, 1);
+			heap = add_heap(size);
 	}
 	if (!heap)
 		return NULL;

@@ -47,7 +47,6 @@ typedef struct s_heap
 } t_heap;
 
 void			*ft_malloc(size_t size);
-t_heap_group	*allocate_heap(size_t size, int mode);
 int				count_heap(void);
 int				check_heap_state(size_t size);
 t_heap_group	*check_heap_left(size_t size);

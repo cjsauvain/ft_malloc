@@ -67,12 +67,14 @@ t_heap_group	*check_heap_left(size_t size)
 		return NULL;
 	heap = select_heap(size);
 	required_size = 0;
-	while (heap && required_size < size)
+	while (heap)
 	{
 		required_size = get_required_size(heap->free_block, size);
+		if (required_size >= size)
+			return heap;
 		heap = heap->next;
 	}
-	return heap;
+	return NULL;
 }
 
 int	check_heap_state(size_t size)
@@ -96,16 +98,13 @@ t_heap_group	*select_heap(size_t size)
 
 void	initialize_new_heap(t_heap_group *new_heap, size_t alloc_size)
 {
-	size_t	metadata_size;
-
-	metadata_size = sizeof(t_block) - sizeof(t_heap_group);
-
 	new_heap->aligned_size = align_mem(alloc_size);
 	new_heap->alloc_block = NULL;
 	new_heap->prev = NULL;
 	new_heap->next = NULL;
 	new_heap->free_block = (t_block *)((char *)new_heap + sizeof(t_heap_group));
-	new_heap->free_block->size = alloc_size - metadata_size;
+	new_heap->free_block->size = alloc_size - sizeof(t_block) \
+		- sizeof(t_heap_group);
 	new_heap->free_block->aligned_size = align_mem(new_heap->free_block->size);
 	new_heap->free_block->next = NULL;
 	new_heap->free_block->prev = NULL;

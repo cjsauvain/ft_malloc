@@ -96,16 +96,12 @@ t_heap_group	*select_heap(size_t size)
 
 void	initialize_new_heap(t_heap_group *new_heap, size_t alloc_size)
 {
-	size_t	metadata_size;
-
-	metadata_size = sizeof(t_block) - sizeof(t_heap_group);
-
 	new_heap->aligned_size = align_mem(alloc_size);
 	new_heap->alloc_block = NULL;
 	new_heap->prev = NULL;
 	new_heap->next = NULL;
 	new_heap->free_block = (t_block *)((char *)new_heap + sizeof(t_heap_group));
-	new_heap->free_block->size = alloc_size - metadata_size;
+	new_heap->free_block->size = alloc_size - sizeof(t_block) - sizeof(t_heap_group);
 	new_heap->free_block->aligned_size = align_mem(new_heap->free_block->size);
 	new_heap->free_block->next = NULL;
 	new_heap->free_block->prev = NULL;

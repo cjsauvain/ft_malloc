@@ -5,46 +5,11 @@
 # include <unistd.h>
 # include <stdbool.h>
 # include "libft.h"
-
-
-# define align_mem(size) ((size + (sizeof(void *) - 1)) & ~(sizeof(void *) - 1))
-
-# define TINY_BLOCK 64
-# define SMALL_BLOCK 512
-# define TINY_HEAP 4 * sysconf(_SC_PAGESIZE)
-# define SMALL_HEAP 16 * sysconf(_SC_PAGESIZE)
-
-#define URED "\e[4;31m"
-#define BMAG "\e[1;35m"
-#define reset "\e[0m"
+# include "struct.h"
+# include "defines.h"
 
 typedef struct s_heap	t_heap;
-
 extern t_heap	g_heap;
-
-typedef struct s_block
-{
-	size_t			size;
-	size_t			aligned_size;
-	struct s_block	*prev;
-	struct s_block	*next;
-} t_block;
-
-typedef struct s_heap_group
-{
-	size_t				aligned_size;
-	t_block				*alloc_block;
-	t_block				*free_block;
-	struct s_heap_group	*prev;
-	struct s_heap_group	*next;
-} t_heap_group;
-
-typedef struct s_heap
-{
-	t_heap_group	*tiny_heap;
-	t_heap_group	*small_heap;
-	t_heap_group	*large_heap;
-} t_heap;
 
 void			*ft_malloc(size_t size);
 int				count_heap(void);

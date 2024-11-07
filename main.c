@@ -1,5 +1,5 @@
-#include "libft_malloc/mandatory/include/libft_malloc.h"
-//#include "libft_malloc/bonus/include/libft_malloc_bonus.h"
+//#include "libft_malloc/mandatory/include/libft_malloc.h"
+#include "libft_malloc/bonus/include/libft_malloc_bonus.h"
 
 int	main(void)
 {
@@ -22,6 +22,11 @@ int	main(void)
 
 
 	char	*reall = ft_realloc(n, 54 * sizeof(char));
+
+	ft_strlcpy(a, "abcd", 5);
+	ft_strlcpy(b, "Bonjour", 8);
+	ft_strlcpy(c, "Je m'appelle", 13);
+	ft_strlcpy(d, "Jordan", 7);
 	(void)a;
 	(void)b;
 	(void)c;
@@ -38,7 +43,7 @@ int	main(void)
 	(void)reall;
 
 
-	show_alloc_mem();
+	show_alloc_mem("TINY");
 	ft_free(a);
 	ft_free(b);
 	ft_free(c);

@@ -46,12 +46,15 @@ void	ft_free(void *ptr)
 	t_heap_group	*heap;
 	t_block			*block;
 
+	pthread_mutex_lock(&g_mutex);
 	block = (t_block *)((char *)ptr - sizeof(t_block));
 	heap = find_heap(block, 0);
-	if (!heap)
-		return ;
-	if (block->size > SMALL_BLOCK)
-		munmap_heap(heap, block);
-	else
-		free_block(heap, block);
+	if (heap)
+	{
+		if (block->size > SMALL_BLOCK)
+			munmap_heap(heap, block);
+		else
+			free_block(heap, block);
+	}
+	pthread_mutex_unlock(&g_mutex);
 }

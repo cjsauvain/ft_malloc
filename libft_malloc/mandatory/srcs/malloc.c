@@ -1,6 +1,6 @@
 #include "libft_malloc.h"
 
-t_heap	g_heap = {};
+t_heap	g_heap;
 
 void	*ft_malloc(size_t size)
 {

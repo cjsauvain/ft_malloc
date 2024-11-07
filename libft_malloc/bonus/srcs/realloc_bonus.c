@@ -18,6 +18,7 @@ static void	*realloc_ptr(t_heap_group *heap, t_block *ptr_block, \
 	void	*new_ptr;
 	void	*ptr;
 
+	pthread_mutex_lock(&g_mutex);
 	new_ptr = ptr_block;
 	ptr = (char *)ptr_block + sizeof(t_block);
 	if (ptr_block->size > realloc_size)
@@ -26,6 +27,7 @@ static void	*realloc_ptr(t_heap_group *heap, t_block *ptr_block, \
 		new_ptr = extend_block(heap, ptr_block, realloc_size);
 	if (new_ptr)
 		ft_memmove(new_ptr, ptr, ptr_block->size);
+	pthread_mutex_unlock(&g_mutex);
 	return new_ptr;
 }
 
@@ -36,7 +38,9 @@ static void	*rezone_allocation(t_block *ptr_block, void *ptr, size_t size)
 	new_ptr = ft_malloc(size);
 	if (!new_ptr)
 		return NULL;
+	pthread_mutex_lock(&g_mutex);
 	ft_memmove(new_ptr, ptr, ptr_block->size);
+	pthread_mutex_unlock(&g_mutex);
 	ft_free(ptr);
 	return new_ptr;
 }

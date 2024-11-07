@@ -75,6 +75,7 @@ ifdef BONUS
 			HEADER += $(DIR_INCLUDE)/libft_malloc_bonus.h
 			SRCS =	$(addsuffix _bonus.c, $(addprefix $(DIR_SRCS_BONUS)/, $(SRC))) \
 					$(DIR_SRCS_BONUS)/show_mem_hexdump/show_mem_hexdump_bonus.c
+			CFLAGS += -pthread
 
 else
 			DIR_INCLUDE = $(DIR_MALLOC)/mandatory/include

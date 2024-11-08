@@ -24,7 +24,7 @@ t_heap_group	*select_heap(size_t size);
 void			*get_avail_block(t_heap_group *heap, size_t size);
 void			ft_free(void *ptr);
 void			*ft_realloc(void *ptr, size_t size);
-void		 	show_alloc_mem(char *heap_str);
+void		 	show_alloc_mem_ex(char *heap_str);
 t_heap_group	*find_heap(t_block *, int i);
 t_heap_group	*merge_heaps(t_heap_group *heap_pos, t_heap_group *new_heap, size_t alloc_size);
 t_block			*shrink_alloc_block(t_heap_group *heap, t_block *ptr_block, size_t realloc_size);

@@ -10,6 +10,7 @@
 
 #define URED "\e[4;31m"
 #define BMAG "\e[1;35m"
+#define YEL "\e[0;33m"
 #define reset "\e[0m"
 
 #endif

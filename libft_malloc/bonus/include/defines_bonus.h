@@ -11,6 +11,7 @@
 #define YEL "\e[0;33m"
 #define MAG "\e[0;35m"
 #define BCYN "\e[1;36m"
+#define BRED "\e[1;31m"
 #define reset "\e[0m"
 
 #endif

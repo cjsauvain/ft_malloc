@@ -27,6 +27,7 @@ int	main(void)
 	ft_strlcpy(b, "Bonjour", 8);
 	ft_strlcpy(c, "Je m'appelle", 13);
 	ft_strlcpy(d, "Jordan", 7);
+	ft_strlcpy(&d[20], "aaaa", 5);
 	(void)a;
 	(void)b;
 	(void)c;
@@ -43,7 +44,7 @@ int	main(void)
 	(void)reall;
 
 
-	show_alloc_mem("TINY");
+	show_alloc_mem_ex("TINY");
 	ft_free(a);
 	ft_free(b);
 	ft_free(c);

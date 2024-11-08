@@ -13,7 +13,7 @@ static size_t	loop_alloc_block(t_block *alloc_block)
 		offset = alloc_block->aligned_size + sizeof(t_block);
 		beginning_block = (size_t *)alloc_block;
 		end_block = (size_t *)((char *)alloc_block + offset);
-		ft_printf("%p - %p : %d bytes\n", beginning_block, end_block, \
+		ft_printf("%p - %p :"YEL" %d bytes\n"reset, beginning_block, end_block, \
 			alloc_block->size);
 		size += alloc_block->size;
 		alloc_block = alloc_block->next;

@@ -9,23 +9,17 @@ endif
 ######################### DIRS ##########################
 
 DIR_MALLOC = libft_malloc
-
-DIR_SRCS = $(DIR_MALLOC)/mandatory/srcs
-
+DIR_SRCS_MANDATORY = $(DIR_MALLOC)/mandatory/srcs
 DIR_SRCS_BONUS = $(DIR_MALLOC)/bonus/srcs
-
-
 DIR_LIBFT = libft
 
 ####################### LIBRARIES #######################
 
 NAME = $(DIR_MALLOC)/libft_malloc_$(HOSTTYPE).so
-
 SYMLINK_LIB = libft_malloc.so
-
 LIBFT = $(DIR_LIBFT)/libft.a
 
-######################### SRCS ##########################
+######################### FILES ##########################
 
 SRC_BLOCK =	get_avail_block		\
 			add_free_block		\
@@ -50,22 +44,17 @@ SRC =	$(SRCS_BLOCK)		\
 		realloc				\
 		free				\
 
-SRCS = $(addprefix $(DIR_SRCS)/, $(SRC))	\
-
 OBJS = $(SRCS:%.c=%.o)
 
 ######################### HEADERS ##########################
 
 HEADERS = $(DIR_LIBFT)/libft.h
-
 INCLUDE = -I $(DIR_INCLUDE) -I $(DIR_LIBFT)
 
 ####################### COMPILATION ########################
 
 CC = gcc
-
 CFLAGS = -Wall -Werror -Wextra -g
-
 LIBFLAGS = -fPIC -shared
 
 ########################## RULES ###########################
@@ -73,15 +62,17 @@ LIBFLAGS = -fPIC -shared
 ifdef BONUS
 			DIR_INCLUDE = $(DIR_MALLOC)/bonus/include
 			HEADER += $(DIR_INCLUDE)/libft_malloc_bonus.h
-			SRCS =	$(addsuffix _bonus.c, $(addprefix $(DIR_SRCS_BONUS)/, $(SRC))) \
-					$(DIR_SRCS_BONUS)/show_mem_hexdump/show_mem_hexdump_bonus.c
+			SRCS =	$(addsuffix _bonus.c, $(addprefix $(DIR_SRCS_BONUS)/, $(SRC)))	\
+					$(DIR_SRCS_BONUS)/show_mem_hexdump/show_mem_hexdump_bonus.c		\
+					main_bonus.c
 			CFLAGS += -pthread
 
 else
 			DIR_INCLUDE = $(DIR_MALLOC)/mandatory/include
 			HEADER += $(DIR_INCLUDE)/libft_malloc.h
-			SRCS =	$(addsuffix .c, $(addprefix $(DIR_SRCS)/, $(SRC))) \
-					$(DIR_SRCS)/show_mem/show_alloc_mem.c
+			SRCS =	$(addsuffix .c, $(addprefix $(DIR_SRCS_MANDATORY)/, $(SRC)))	\
+					$(DIR_SRCS_MANDATORY)/show_mem/show_alloc_mem.c					\
+					main.c
 endif
 
 %.o: %.c
@@ -89,11 +80,11 @@ endif
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(HEADERS) main.o $(OBJS)
+$(NAME): $(LIBFT) $(HEADERS) $(OBJS)
 	$(CC) $(CFLAGS) $(LIBFLAGS) $(OBJS) -o $(NAME)
 	rm -f $(SYMLINK_LIB)
 	ln -s $(NAME) $(SYMLINK_LIB)
-	$(CC) $(CFLAGS) main.o $(INCLUDE) -L. -L$(DIR_LIBFT) -lft_malloc -lft -o malloc
+	$(CC) $(CFLAGS) $(INCLUDE) -L. -L$(DIR_LIBFT) -lft_malloc -lft -o malloc
 
 bonus:
 	make BONUS=1
@@ -103,7 +94,7 @@ $(LIBFT):
 
 clean:
 	make clean -C libft
-	rm -rf $(OBJS) main.o
+	rm -rf $(OBJS)
 
 cleanb:
 	make clean BONUS=1

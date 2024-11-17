@@ -1,4 +1,4 @@
-#include "libft_malloc/mandatory/include/libft_malloc.h"
+#include "libft_malloc/bonus/include/libft_malloc_bonus.h"
 
 int	main(void)
 {
@@ -43,7 +43,7 @@ int	main(void)
 	(void)reall;
 
 
-	show_alloc_mem();
+	show_alloc_mem_ex("TINY");
 	ft_free(a);
 	ft_free(b);
 	ft_free(c);

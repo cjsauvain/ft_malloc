@@ -6,7 +6,7 @@
 #    By: jsauvain <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/12 15:21:43 by jsauvain          #+#    #+#              #
-#    Updated: 2022/09/07 10:50:13 by jsauvain         ###   ########.fr        #
+#    Updated: 2024/11/18 10:05:27 by jsauvain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ CCFLAGS = -Wall -Wextra -Werror
 
 OBJS = ${SRCS:.c=.o}
 
-BONUS = ${BSRCS:.c=.o} 
+BONUS_LIBFT = ${BSRCS:.c=.o} 
 
 NAME = libft.a
 
@@ -38,11 +38,11 @@ AR = ar rcs
 
 all: $(NAME) bonus
 
-bonus: ${BONUS}
-		${AR} $(NAME) ${BONUS}
+bonus: ${BONUS_LIBFT}
+		${AR} $(NAME) ${BONUS_LIBFT}
 
 clean:
-		${RM} ${OBJS} ${BONUS}
+		${RM} ${OBJS} ${BONUS_LIBFT}
 
 .c.o:
 	${CC} ${CFLAGS} -c $< -o ${<:.c=.o}

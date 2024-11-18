@@ -6,7 +6,7 @@
 /*   By: jsauvain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 10:36:12 by jsauvain          #+#    #+#             */
-/*   Updated: 2022/04/12 15:47:44 by jsauvain         ###   ########.fr       */
+/*   Updated: 2024/11/18 12:06:37 by jsauvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static char	*dst_arg_malloc(char *dst, char const *s, char c, int i)
 
 	j = 0;
 	while (s[i] != c && s[i])
-	{	
+	{
 		i++;
 		j++;
 	}
@@ -81,7 +81,7 @@ static char	**assign_dst(char **dst, char const *s, char c)
 		while (*s == c)
 			s++;
 		while (*s != c && *s)
-		{	
+		{
 			dst[j][i++] = *s;
 			s++;
 		}
@@ -107,7 +107,7 @@ char	**ft_split(char const *s, char c)
 		if (s[i] == c)
 			i++;
 		else
-		{	
+		{
 			dst[j] = dst_arg_malloc(dst[j], s, c, i);
 			if (dst[j] == NULL || dst[0] == 0)
 				return (dst);

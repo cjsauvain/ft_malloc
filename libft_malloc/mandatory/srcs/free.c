@@ -30,7 +30,7 @@ static void	munmap_heap(t_heap_group *heap, t_block *block)
 	ptr = (void *)((char *)block - sizeof(t_heap_group));
 	prev_heap = heap->prev;
 	next_heap = heap->next;
-	status = munmap(ptr, align_mem(alloc_size));
+	status = munmap(ptr, ALIGN_MEM(alloc_size));
 	if (!status)
 		update_heaps(prev_heap, next_heap);
 }

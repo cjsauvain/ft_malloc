@@ -8,7 +8,7 @@ static void	merge_blocks(t_block *block, size_t required_size)
 	while (block && required_size)
 	{
 		block->prev->size += block->size + sizeof(t_block);
-		block->prev->aligned_size = align_mem(block->prev->size);
+		block->prev->aligned_size = ALIGN_MEM(block->prev->size);
 		block->prev->next = block->next;
 		block = block->prev;
 		required_size -= block->size;
@@ -18,9 +18,10 @@ static void	merge_blocks(t_block *block, size_t required_size)
 static size_t	get_required_size(t_block *tmp, size_t realloc_size)
 {
 	size_t	required_size;
-	size_t	offset = 0;
+	size_t	offset;
 
 	required_size = 0;
+	offset = 0;
 	while (tmp)
 	{
 		if (tmp->prev)

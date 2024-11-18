@@ -6,7 +6,7 @@
 /*   By: jsauvain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 17:14:14 by jsauvain          #+#    #+#             */
-/*   Updated: 2022/04/06 18:00:57 by jsauvain         ###   ########.fr       */
+/*   Updated: 2024/11/18 12:06:01 by jsauvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	if (dst == NULL)
 		return (NULL);
 	while (s[i])
-	{	
+	{
 		dst[i] = (*f)(i, s[i]);
 		i++;
 	}

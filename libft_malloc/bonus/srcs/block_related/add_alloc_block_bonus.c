@@ -13,7 +13,7 @@ static t_block	*update_alloc_blocks(t_block *alloc_block, \
 	}
 	alloc_block = free_block;
 	alloc_block->size = size;
-	alloc_block->aligned_size = align_mem(size);
+	alloc_block->aligned_size = ALIGN_MEM(size);
 	alloc_block->next = NULL;
 	if (tmp)
 	{

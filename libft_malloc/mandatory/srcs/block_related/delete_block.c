@@ -2,8 +2,9 @@
 
 static t_block	*delete_whole_block(t_block *block, int merge_req)
 {
-	size_t	offset = 0;
+	size_t	offset;
 
+	offset = 0;
 	if (!block->prev && block->next)
 		block->next->prev = NULL;
 	else if (!block->prev)
@@ -13,7 +14,7 @@ static t_block	*delete_whole_block(t_block *block, int merge_req)
 	if (merge_req && (char *)block->prev + offset == (char *)block->next)
 	{
 		block->prev->size += (block->next->size + sizeof(t_block));
-		block->prev->aligned_size = align_mem(block->prev->size);
+		block->prev->aligned_size = ALIGN_MEM(block->prev->size);
 		block->prev->next = block->next->next;
 	}
 	else
@@ -31,16 +32,16 @@ static t_block	*delete_whole_block(t_block *block, int merge_req)
 static void	update_deleted_part(t_block *block, size_t size)
 {
 	block->size = size;
-	block->aligned_size = align_mem(block->size);
+	block->aligned_size = ALIGN_MEM(block->size);
 }
 
 static t_block	*update_left_part(t_block *block, size_t size)
 {
 	t_block	*tmp;
 
-	tmp = (t_block *)((char *)block + sizeof(t_block) + align_mem(size));
+	tmp = (t_block *)((char *)block + sizeof(t_block) + ALIGN_MEM(size));
 	tmp->size = block->size - size;
-	tmp->aligned_size = align_mem(tmp->size);
+	tmp->aligned_size = ALIGN_MEM(tmp->size);
 	if (block->prev)
 		block->prev->next = tmp;
 	if (block->next)

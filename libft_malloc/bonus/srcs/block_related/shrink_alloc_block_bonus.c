@@ -7,11 +7,11 @@ t_block	*shrink_alloc_block(t_heap_group *heap, t_block *ptr_block, \
 	size_t	aligned_realloc_size;
 	size_t	offset;
 
-	aligned_realloc_size = align_mem(realloc_size);
+	aligned_realloc_size = ALIGN_MEM(realloc_size);
 	offset = aligned_realloc_size + sizeof(t_block);
 	freed_block = (t_block *)((char *)ptr_block + offset);
 	freed_block->size = ptr_block->size - realloc_size - sizeof(t_block);
-	freed_block->aligned_size = align_mem(freed_block->size);
+	freed_block->aligned_size = ALIGN_MEM(freed_block->size);
 	add_free_block(heap, freed_block);
 
 	ptr_block->size = realloc_size;

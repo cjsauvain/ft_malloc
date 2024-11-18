@@ -6,7 +6,7 @@
 /*   By: jsauvain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 17:33:20 by jsauvain          #+#    #+#             */
-/*   Updated: 2022/04/05 17:49:56 by jsauvain         ###   ########.fr       */
+/*   Updated: 2024/11/18 12:06:16 by jsauvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		i++;
 	}
 	while (s2[j])
-	{	
+	{
 		dst[i] = s2[j];
 		i++;
 		j++;

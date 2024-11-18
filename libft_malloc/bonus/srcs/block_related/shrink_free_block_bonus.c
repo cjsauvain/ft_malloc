@@ -74,11 +74,11 @@ t_block	*shrink_free_block(t_heap_group *heap, t_block *ptr_block, \
 	size_t	aligned_realloc_size;
 	size_t	offset;
 
-	aligned_realloc_size = align_mem(realloc_size);
+	aligned_realloc_size = ALIGN_MEM(realloc_size);
 	offset = aligned_realloc_size + sizeof(t_block);
 	tmp_block = (t_block *)((char *)realloc_block + offset);
 	tmp_block->size = realloc_block->size - realloc_size - sizeof(t_block);
-	tmp_block->aligned_size = align_mem(tmp_block->size);
+	tmp_block->aligned_size = ALIGN_MEM(tmp_block->size);
 	heap->free_block = tmp_block;
 	realloc_block->size = realloc_size;
 	realloc_block->aligned_size = aligned_realloc_size;

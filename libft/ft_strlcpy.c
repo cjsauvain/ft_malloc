@@ -6,7 +6,7 @@
 /*   By: jsauvain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 17:11:19 by jsauvain          #+#    #+#             */
-/*   Updated: 2022/04/04 19:22:48 by jsauvain         ###   ########.fr       */
+/*   Updated: 2024/11/18 14:23:57 by jsauvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,8 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 			i++;
 		return (i);
 	}
-	while (src[i])
-	{
-		while (j < size - 1 && src[i])
-			dst[j++] = src[i++];
-		if (src[i] != '\0')
-			i++;
-	}
+	while (src[i] && j < size - 1)
+		dst[j++] = src[i++];
 	dst[j] = '\0';
 	return (i);
 }

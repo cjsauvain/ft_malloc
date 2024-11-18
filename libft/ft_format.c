@@ -6,7 +6,7 @@
 /*   By: jsauvain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:37:35 by jsauvain          #+#    #+#             */
-/*   Updated: 2022/05/09 17:22:32 by jsauvain         ###   ########.fr       */
+/*   Updated: 2024/11/18 12:05:44 by jsauvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	ft_formatting(const char *str, va_list arg)
 		i += 2;
 		ft_putstr("0x");
 		i += put_hexa_ptr(va_arg(arg, unsigned long long), i);
-	
 	}
 	else if (str[1] == 'i' || str[1] == 'd')
 		i += ft_putnbr(va_arg(arg, int), i);

@@ -31,10 +31,14 @@ SRC_BLOCK =	get_avail_block		\
 
 SRCS_BLOCK = $(addprefix block_related/, $(SRC_BLOCK))
 
-SRC_HEAP =	add_heap		\
-			create_new_heap	\
-			heap_utils		\
-			merge_heaps		\
+SRC_HEAP =	add_heap					\
+			create_new_heap				\
+			heap_utils					\
+			merge_heaps					\
+			add_new_heap_free_blocks	\
+			add_heap_pos_free_blocks	\
+			find_heap					\
+			initialize_new_heap			\
 
 SRCS_HEAP = $(addprefix heap_related/, $(SRC_HEAP))
 
@@ -54,7 +58,7 @@ INCLUDE = -I $(DIR_INCLUDE) -I $(DIR_LIBFT)
 ####################### COMPILATION ########################
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra
 LIBFLAGS = -fPIC -shared
 
 ########################## RULES ###########################
@@ -64,15 +68,14 @@ ifdef BONUS
 			HEADER += $(DIR_INCLUDE)/libft_malloc_bonus.h
 			SRCS =	$(addsuffix _bonus.c, $(addprefix $(DIR_SRCS_BONUS)/, $(SRC)))	\
 					$(DIR_SRCS_BONUS)/show_mem_hexdump/show_mem_hexdump_bonus.c		\
-					main_bonus.c
+					$(DIR_SRCS_BONUS)/show_mem_hexdump/display_hexa_format_bonus.c
 			CFLAGS += -pthread
 
 else
 			DIR_INCLUDE = $(DIR_MALLOC)/mandatory/include
 			HEADER += $(DIR_INCLUDE)/libft_malloc.h
 			SRCS =	$(addsuffix .c, $(addprefix $(DIR_SRCS_MANDATORY)/, $(SRC)))	\
-					$(DIR_SRCS_MANDATORY)/show_mem/show_alloc_mem.c					\
-					main.c
+					$(DIR_SRCS_MANDATORY)/show_mem/show_alloc_mem.c
 endif
 
 %.o: %.c
@@ -84,7 +87,6 @@ $(NAME): $(LIBFT) $(HEADERS) $(OBJS)
 	$(CC) $(CFLAGS) $(LIBFLAGS) $(OBJS) -o $(NAME)
 	rm -f $(SYMLINK_LIB)
 	ln -s $(NAME) $(SYMLINK_LIB)
-	$(CC) $(CFLAGS) $(INCLUDE) -L. -L$(DIR_LIBFT) -lft_malloc -lft -o malloc
 
 bonus:
 	make BONUS=1

@@ -7,7 +7,7 @@ typedef struct s_block
 	size_t			aligned_size;
 	struct s_block	*prev;
 	struct s_block	*next;
-} t_block;
+}	t_block;
 
 typedef struct s_heap_group
 {
@@ -16,13 +16,13 @@ typedef struct s_heap_group
 	t_block				*free_block;
 	struct s_heap_group	*prev;
 	struct s_heap_group	*next;
-} t_heap_group;
+}	t_heap_group;
 
 typedef struct s_heap
 {
 	t_heap_group	*tiny_heap;
 	t_heap_group	*small_heap;
 	t_heap_group	*large_heap;
-} t_heap;
+}	t_heap;
 
 #endif

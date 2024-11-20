@@ -3,7 +3,7 @@
 t_heap			g_heap;
 pthread_mutex_t	g_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-void	*ft_malloc(size_t size)
+void	*malloc(size_t size)
 {
 	t_heap_group	*heap;
 	void			*block;

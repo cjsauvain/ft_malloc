@@ -41,7 +41,7 @@ static void	free_block(t_heap_group *heap, t_block *block)
 	add_free_block(heap, block);
 }
 
-void	ft_free(void *ptr)
+void	free(void *ptr)
 {
 	t_heap_group	*heap;
 	t_block			*block;

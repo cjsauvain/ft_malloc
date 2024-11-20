@@ -55,7 +55,7 @@ void	*extend_block(t_heap_group *heap, t_block *ptr_block, \
 	}
 	else
 	{
-		new_ptr = ft_malloc(realloc_size);
+		new_ptr = malloc(realloc_size);
 		if (!new_ptr)
 			return NULL;
 		if (ptr_block->prev)

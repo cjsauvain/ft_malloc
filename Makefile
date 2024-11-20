@@ -33,12 +33,15 @@ SRCS_BLOCK = $(addprefix block_related/, $(SRC_BLOCK))
 
 SRC_HEAP =	add_heap					\
 			create_new_heap				\
-			heap_utils					\
 			merge_heaps					\
 			add_new_heap_free_blocks	\
 			add_heap_pos_free_blocks	\
 			find_heap					\
 			initialize_new_heap			\
+			select_heap					\
+			get_heap_group				\
+			check_heap_state			\
+			check_heap_left				\
 
 SRCS_HEAP = $(addprefix heap_related/, $(SRC_HEAP))
 
@@ -60,6 +63,7 @@ INCLUDE = -I $(DIR_INCLUDE) -I $(DIR_LIBFT)
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 LIBFLAGS = -fPIC -shared
+LIBFT_LINK = -Llibft -lft
 
 ########################## RULES ###########################
 
@@ -79,7 +83,7 @@ else
 endif
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(LIBFLAGS) $(INCLUDE) -c $< -o $@
+	$(CC) $(CFLAGS) $(LIBFLAGS) $(INCLUDE) $(LIBFT_LINK) -c $< -o $@
 
 all: $(NAME)
 

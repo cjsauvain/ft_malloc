@@ -40,31 +40,3 @@ t_heap_group	*check_heap_left(size_t size)
 	}
 	return NULL;
 }
-
-int	check_heap_state(size_t size)
-{
-	t_heap_group	*heap;
-
-	heap = select_heap(size);
-	if (heap == NULL)
-		return 0;
-	return 1;
-}
-
-t_heap_group	*select_heap(size_t size)
-{
-	if (size <= TINY_BLOCK)
-		return g_heap.tiny_heap;
-	else if (size > TINY_BLOCK && size <= SMALL_BLOCK)
-		return g_heap.small_heap;
-	return g_heap.large_heap;
-}
-
-size_t	get_heap_group(size_t size)
-{
-	if (size <= TINY_BLOCK)
-		return TINY_HEAP;
-	else if (size > TINY_BLOCK && size <= SMALL_BLOCK)
-		return SMALL_HEAP;
-	return (size + sizeof(t_heap_group) + sizeof(t_block));
-}

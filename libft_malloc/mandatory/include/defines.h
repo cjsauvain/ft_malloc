@@ -3,10 +3,11 @@
 
 # define ALIGN_MEM(size) ((size + (sizeof(void *) - 1)) & ~(sizeof(void *) - 1))
 
-# define TINY_BLOCK 64
-# define SMALL_BLOCK 512
-# define TINY_HEAP 4 * sysconf(_SC_PAGESIZE)
-# define SMALL_HEAP 16 * sysconf(_SC_PAGESIZE)
+# define PAGE_SIZE		sysconf(_SC_PAGESIZE)
+# define TINY_BLOCK		64
+# define SMALL_BLOCK	512
+# define TINY_HEAP		4 * PAGE_SIZE
+# define SMALL_HEAP		16 * PAGE_SIZE
 
 # define URED "\e[4;31m"
 # define BMAG "\e[1;35m"

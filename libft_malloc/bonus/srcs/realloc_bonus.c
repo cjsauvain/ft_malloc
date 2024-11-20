@@ -35,17 +35,17 @@ static void	*rezone_allocation(t_block *ptr_block, void *ptr, size_t size)
 {
 	void	*new_ptr;
 
-	new_ptr = ft_malloc(size);
+	new_ptr = malloc(size);
 	if (!new_ptr)
 		return NULL;
 	pthread_mutex_lock(&g_mutex);
 	ft_memmove(new_ptr, ptr, ptr_block->size);
 	pthread_mutex_unlock(&g_mutex);
-	ft_free(ptr);
+	free(ptr);
 	return new_ptr;
 }
 
-void	*ft_realloc(void *ptr, size_t size)
+void	*realloc(void *ptr, size_t size)
 {
 	void			*new_ptr;
 	t_block			*block;
@@ -53,9 +53,9 @@ void	*ft_realloc(void *ptr, size_t size)
 
 	new_ptr = NULL;
 	if (!ptr)
-		new_ptr = ft_malloc(size);
+		new_ptr = malloc(size);
 	else if (!size)
-		ft_free(ptr);
+		free(ptr);
 	else
 	{
 		block = (t_block *)((char *)ptr - sizeof(t_block));

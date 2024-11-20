@@ -2,7 +2,7 @@
 
 t_heap	g_heap;
 
-void	*ft_malloc(size_t size)
+void	*malloc(size_t size)
 {
 	t_heap_group	*heap;
 	void			*block;

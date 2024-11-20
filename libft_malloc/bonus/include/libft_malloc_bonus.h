@@ -18,14 +18,14 @@ extern pthread_mutex_t	g_mutex;
 
 
 //FUNCTIONS
-void			*ft_malloc(size_t size);
+void			*malloc(size_t size);
 int				count_heap(void);
 int				check_heap_state(size_t size);
 t_heap_group	*check_heap_left(size_t size);
 t_heap_group	*select_heap(size_t size);
 void			*get_avail_block(t_heap_group *heap, size_t size);
-void			ft_free(void *ptr);
-void			*ft_realloc(void *ptr, size_t size);
+void			free(void *ptr);
+void			*realloc(void *ptr, size_t size);
 void			show_alloc_mem_ex(char *heap_str);
 t_heap_group	*find_heap(t_block *block, int i);
 t_heap_group	*merge_heaps(t_heap_group *heap_pos, t_heap_group *new_heap, \

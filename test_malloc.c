@@ -7,7 +7,7 @@ int	main(void)
 
 	while (i < 1024)
 	{
-		str = malloc(1024 * sizeof(char));
+		str = malloc(5 * sizeof(char));
 		if (!str)
 			continue ;
 		str[0] = 'a';

@@ -1,4 +1,4 @@
-#include "libft_malloc.c"
+#include "libft_malloc.h"
 
 t_heap_group	*select_heap(size_t size)
 {

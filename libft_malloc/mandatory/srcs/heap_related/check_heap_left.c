@@ -7,7 +7,7 @@ static size_t	get_required_size(t_block *heap_free, size_t size)
 
 	required_size = 0;
 	offset = 0;
-	while (heap_free && required_size < size)
+	while (heap_free && required_size < size + sizeof(t_block))
 	{
 		if (heap_free->prev)
 			offset = heap_free->prev->aligned_size + sizeof(t_block);
@@ -19,6 +19,8 @@ static size_t	get_required_size(t_block *heap_free, size_t size)
 			required_size = 0;
 		heap_free = heap_free->next;
 	}
+	if (required_size < size + sizeof(t_block))
+		return 0;
 	return required_size;
 }
 

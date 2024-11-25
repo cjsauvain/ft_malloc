@@ -40,7 +40,7 @@ static t_block	*update_left_part(t_block *block, size_t size)
 	t_block	*tmp;
 
 	tmp = (t_block *)((char *)block + sizeof(t_block) + ALIGN_MEM(size));
-	tmp->size = block->size - size;
+	tmp->size = block->size - size - sizeof(t_block);
 	tmp->aligned_size = ALIGN_MEM(tmp->size);
 	if (block->prev)
 		block->prev->next = tmp;

@@ -9,7 +9,7 @@ static void	*first_fit(t_heap_group *heap, size_t size)
 	while (free_block && free_block->size < size)
 		free_block = free_block->next;
 	heap->free_block = delete_block(free_block, size, 1);
-	block = add_alloc_block(heap, free_block, size);
+	block = add_alloc_block(heap, free_block);
 	return (void *)((char *)block + sizeof(t_block));
 }
 

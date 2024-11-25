@@ -18,7 +18,15 @@ static size_t	loop_alloc_block(t_block *alloc_block)
 		size += alloc_block->size;
 		alloc_block = alloc_block->next;
 	}
+	ft_putchar('\n');
 	return size;
+}
+
+static void	display_heap_group_banner(t_heap_group *heap, char *size_str)
+{
+		ft_printf(BMAG"********************************\n");
+		ft_printf("*       %s_HEAP_GROUP       *\n", size_str, heap);
+		ft_printf("********************************\n\n"RESET);
 }
 
 static size_t	display_heap(size_t size, char *size_str)
@@ -27,7 +35,7 @@ static size_t	display_heap(size_t size, char *size_str)
 	size_t			total_size;
 	
 	heap = select_heap(size);
-	ft_printf(BMAG"%s : %p\n"RESET, size_str, heap);
+	display_heap_group_banner(heap, size_str);
 	if (!heap)
 	{
 		ft_putchar('\n');
@@ -36,10 +44,10 @@ static size_t	display_heap(size_t size, char *size_str)
 	total_size = 0;
 	while (heap)
 	{
+		ft_printf(URED"HEAP ADDRESS : %p\n"RESET, size_str, heap);
 		total_size += loop_alloc_block(heap->alloc_block);
 		heap = heap->next;
 	}
-	ft_putchar('\n');
 	return total_size;
 }
 
@@ -47,7 +55,7 @@ void	show_alloc_mem(void)
 {
 	size_t	total_size;
 
-	total_size = display_heap(TINY_BLOCK, "\nTINY");
+	total_size = display_heap(TINY_BLOCK, "TINY");
 	total_size += display_heap(SMALL_BLOCK, "SMALL");
 	total_size += display_heap(SMALL_BLOCK + 1, "LARGE");
 	ft_printf(URED"Total : %d bytes\n"RESET, total_size);

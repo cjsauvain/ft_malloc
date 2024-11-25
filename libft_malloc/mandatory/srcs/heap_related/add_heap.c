@@ -41,7 +41,7 @@ t_heap_group	*add_heap(size_t size)
 	t_heap_group	*heap_pos;
 	size_t			alloc_size;
 
-	alloc_size = get_alloc_size(size);
+	alloc_size = get_heap_group(size);
 	new_heap = mmap(NULL, ALIGN_MEM(alloc_size), \
 		PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
 	if (new_heap == MAP_FAILED)
@@ -50,7 +50,10 @@ t_heap_group	*add_heap(size_t size)
 	{
 		heap_pos = check_if_heap_contiguous(new_heap, alloc_size, size);
 		if (heap_pos)
+		{
 			new_heap = merge_heaps(heap_pos, new_heap, alloc_size);
+			return new_heap;
+		}
 	}
 	add_new_heap(new_heap, alloc_size, size);
 	return new_heap;

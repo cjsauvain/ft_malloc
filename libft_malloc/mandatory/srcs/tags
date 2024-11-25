@@ -1,0 +1,16 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+check_rezone_necessity	realloc.c	/^static int	check_rezone_necessity(size_t size_ptr, size_t size_realloc)$/;"	f	file:
+free	free.c	/^void	free(void *ptr)$/;"	f
+free_block	free.c	/^static void	free_block(t_heap_group *heap, t_block *block)$/;"	f	file:
+g_heap	malloc.c	/^t_heap	g_heap;$/;"	v
+malloc	malloc.c	/^void	*malloc(size_t size)$/;"	f
+munmap_heap	free.c	/^static void	munmap_heap(t_heap_group *heap, t_block *block)$/;"	f	file:
+realloc	realloc.c	/^void	*realloc(void *ptr, size_t size)$/;"	f
+realloc_ptr	realloc.c	/^static void	*realloc_ptr(t_heap_group *heap, t_block *ptr_block, \\$/;"	f	file:
+rezone_allocation	realloc.c	/^static void	*rezone_allocation(t_block *ptr_block, void *ptr, size_t size)$/;"	f	file:
+update_heaps	free.c	/^static void	update_heaps(t_heap_group *prev_heap, t_heap_group *next_heap)$/;"	f	file:

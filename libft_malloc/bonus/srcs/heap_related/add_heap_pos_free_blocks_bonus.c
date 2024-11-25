@@ -15,7 +15,8 @@ static void	fill_noncontiguous_free_blocks(t_block *new_heap_free, \
 	new_heap_free->size = alloc_size - sizeof(t_block);
 	new_heap_free->aligned_size = ALIGN_MEM(new_heap_free->size);
 	new_heap_free->next = heap_pos_free;
-	new_heap_free->next->prev = new_heap_free;
+	if (new_heap_free->next)
+		new_heap_free->next->prev = new_heap_free;
 }
 
 static void	initialize_new_heap_free_blocks(t_heap_group *new_heap, \

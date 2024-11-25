@@ -11,6 +11,8 @@ endif
 DIR_MALLOC = libft_malloc
 DIR_SRCS_MANDATORY = $(DIR_MALLOC)/mandatory/srcs
 DIR_SRCS_BONUS = $(DIR_MALLOC)/bonus/srcs
+DIR_INCLUDE_MANDATORY = $(DIR_MALLOC)/mandatory/include
+DIR_INCLUDE_BONUS = $(DIR_MALLOC)/bonus/include
 DIR_LIBFT = libft
 
 ####################### LIBRARIES #######################
@@ -56,28 +58,32 @@ OBJS = $(SRCS:%.c=%.o)
 ######################### HEADERS ##########################
 
 HEADERS = $(DIR_LIBFT)/libft.h
-INCLUDE = -I $(DIR_INCLUDE) -I $(DIR_LIBFT)
+INCLUDE = -I $(DIR_LIBFT)
 
 ####################### COMPILATION ########################
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g
 LIBFLAGS = -fPIC -shared
 LIBFT_LINK = -Llibft -lft
 
 ########################## RULES ###########################
 
 ifdef BONUS
-			DIR_INCLUDE = $(DIR_MALLOC)/bonus/include
-			HEADER += $(DIR_INCLUDE)/libft_malloc_bonus.h
+			INCLUDE +=	-I $(DIR_INCLUDE_BONUS)
+			HEADERS +=	$(DIR_INCLUDE_BONUS)/libft_malloc_bonus.h	\
+						$(DIR_INCLUDE_BONUS)/defines_bonus.h		\
+						$(DIR_INCLUDE_BONUS)/struct_bonus.h
 			SRCS =	$(addsuffix _bonus.c, $(addprefix $(DIR_SRCS_BONUS)/, $(SRC)))	\
 					$(DIR_SRCS_BONUS)/show_mem_hexdump/show_mem_hexdump_bonus.c		\
 					$(DIR_SRCS_BONUS)/show_mem_hexdump/display_hexa_format_bonus.c
 			CFLAGS += -pthread
 
 else
-			DIR_INCLUDE = $(DIR_MALLOC)/mandatory/include
-			HEADER += $(DIR_INCLUDE)/libft_malloc.h
+			INCLUDE +=	-I $(DIR_INCLUDE_MANDATORY)
+			HEADERS +=	$(DIR_INCLUDE_MANDATORY)/libft_malloc.h	\
+						$(DIR_INCLUDE_MANDATORY)/defines.h			\
+						$(DIR_INCLUDE_MANDATORY)/struct.h
 			SRCS =	$(addsuffix .c, $(addprefix $(DIR_SRCS_MANDATORY)/, $(SRC)))	\
 					$(DIR_SRCS_MANDATORY)/show_mem/show_alloc_mem.c
 endif
@@ -88,7 +94,7 @@ endif
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(HEADERS) $(OBJS)
-	$(CC) $(CFLAGS) $(LIBFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(LIBFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 	rm -f $(SYMLINK_LIB)
 	ln -s $(NAME) $(SYMLINK_LIB)
 

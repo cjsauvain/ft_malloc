@@ -1,7 +1,6 @@
 #include "libft_malloc_bonus.h"
 
-static t_block	*update_alloc_blocks(t_block *alloc_block, \
-	t_block *free_block, size_t size)
+static t_block	*update_alloc_blocks(t_block *alloc_block, t_block *free_block)
 {
 	t_block	*tmp;
 
@@ -12,8 +11,6 @@ static t_block	*update_alloc_blocks(t_block *alloc_block, \
 		alloc_block = alloc_block->next;
 	}
 	alloc_block = free_block;
-	alloc_block->size = size;
-	alloc_block->aligned_size = ALIGN_MEM(size);
 	alloc_block->next = NULL;
 	if (tmp)
 	{
@@ -23,14 +20,14 @@ static t_block	*update_alloc_blocks(t_block *alloc_block, \
 	return alloc_block;
 }
 
-t_block	*add_alloc_block(t_heap_group *heap, t_block *free_block, size_t size)
+t_block	*add_alloc_block(t_heap_group *heap, t_block *free_block)
 {
 	t_block	*alloc_block;
 
 	alloc_block = heap->alloc_block;
 	while (alloc_block && alloc_block->next)
 		alloc_block = alloc_block->next;
-	alloc_block = update_alloc_blocks(alloc_block, free_block, size);
+	alloc_block = update_alloc_blocks(alloc_block, free_block);
 	if (!heap->alloc_block)
 		heap->alloc_block = alloc_block;
 	return alloc_block;

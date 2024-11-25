@@ -3,7 +3,7 @@
 
 # define ALIGN_MEM(size) ((size + (sizeof(void *) - 1)) & ~(sizeof(void *) - 1))
 
-# define PAGE_SIZE		sysconf(SC_PAGESIZE)
+# define PAGE_SIZE		sysconf(_SC_PAGESIZE)
 # define TINY_BLOCK		64
 # define SMALL_BLOCK	512
 # define TINY_HEAP		4 * PAGE_SIZE

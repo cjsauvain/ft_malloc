@@ -23,8 +23,8 @@ check_rezone_necessity	realloc_bonus.c	/^static int	check_rezone_necessity(size_
 count_zeros	show_mem_hexdump/display_hexa_format_bonus.c	/^static size_t	count_zeros(char *content, size_t increment, \\$/;"	f	file:
 create_heap	heap_related/create_new_heap_bonus.c	/^t_heap_group	*create_heap(size_t size)$/;"	f
 delete_block	block_related/delete_block_bonus.c	/^t_block	*delete_block(t_block *block, size_t size, int merge_req)$/;"	f
-delete_partially	block_related/delete_block_bonus.c	/^static t_block	*delete_partially(t_block *block, size_t size)$/;"	f	file:
-delete_whole_block	block_related/delete_block_bonus.c	/^static t_block	*delete_whole_block(t_block *block, int merge_req)$/;"	f	file:
+delete_partially	block_related/delete_partially_bonus.c	/^t_block	*delete_partially(t_block *block, size_t size)$/;"	f
+delete_whole_block	block_related/delete_whole_block_bonus.c	/^t_block	*delete_whole_block(t_block *block, int merge_req)$/;"	f
 display_heap	show_mem_hexdump/show_mem_hexdump_bonus.c	/^static void	display_heap(size_t size, char *heap_str)$/;"	f	file:
 display_hexa_format	show_mem_hexdump/display_hexa_format_bonus.c	/^void	display_hexa_format(t_heap_group *heap, t_block *alloc_block)$/;"	f
 display_next_block_address	show_mem_hexdump/show_mem_hexdump_bonus.c	/^static void	display_next_block_address(t_heap_group *heap, char *heap_str, t_block *alloc_block)$/;"	f	file:
@@ -43,10 +43,12 @@ get_required_size	block_related/extend_block_bonus.c	/^static size_t	get_require
 get_required_size	heap_related/check_heap_left_bonus.c	/^static size_t	get_required_size(t_block *heap_free, size_t size)$/;"	f	file:
 initialize_new_heap	heap_related/initialize_new_heap_bonus.c	/^void	initialize_new_heap(t_heap_group *new_heap, size_t alloc_size)$/;"	f
 initialize_new_heap_free_blocks	heap_related/add_heap_pos_free_blocks_bonus.c	/^static void	initialize_new_heap_free_blocks(t_heap_group *new_heap, \\$/;"	f	file:
+link_blocks	block_related/delete_whole_block_bonus.c	/^void	link_blocks(t_block *block)$/;"	f
 loop_alloc_block	show_mem_hexdump/show_mem_hexdump_bonus.c	/^static void	loop_alloc_block(t_heap_group *heap, char *heap_str)$/;"	f	file:
 malloc	malloc_bonus.c	/^void	*malloc(size_t size)$/;"	f
 merge_blocks	block_related/extend_block_bonus.c	/^static void	merge_blocks(t_block *block, size_t required_size)$/;"	f	file:
 merge_heaps	heap_related/merge_heaps_bonus.c	/^t_heap_group	*merge_heaps(t_heap_group *heap_pos, t_heap_group *new_heap, \\$/;"	f
+merging_blocks	block_related/delete_whole_block_bonus.c	/^void	merging_blocks(t_block *block)$/;"	f
 munmap_heap	free_bonus.c	/^static void	munmap_heap(t_heap_group *heap, t_block *block)$/;"	f	file:
 print_white_spaces	show_mem_hexdump/display_hexa_format_bonus.c	/^static void	print_white_spaces(size_t alloc_block_size, \\$/;"	f	file:
 print_zeros	show_mem_hexdump/display_hexa_format_bonus.c	/^static void	print_zeros(char *buffer, size_t *increment, \\$/;"	f	file:
@@ -61,7 +63,7 @@ show_alloc_mem_ex	show_mem_hexdump/show_mem_hexdump_bonus.c	/^void	show_alloc_me
 shrink_alloc_block	block_related/shrink_alloc_block_bonus.c	/^t_block	*shrink_alloc_block(t_heap_group *heap, t_block *ptr_block, \\$/;"	f
 shrink_free_block	block_related/shrink_free_block_bonus.c	/^t_block	*shrink_free_block(t_heap_group *heap, t_block *ptr_block, \\$/;"	f
 update_alloc_blocks	block_related/add_alloc_block_bonus.c	/^static t_block	*update_alloc_blocks(t_block *alloc_block, t_block *free_block)$/;"	f	file:
-update_deleted_part	block_related/delete_block_bonus.c	/^static void	update_deleted_part(t_block *block, size_t size)$/;"	f	file:
+update_deleted_part	block_related/delete_partially_bonus.c	/^static void	update_deleted_part(t_block *block, size_t size)$/;"	f	file:
 update_heap_pos_free_blocks	heap_related/add_new_heap_free_blocks_bonus.c	/^static void	update_heap_pos_free_blocks(t_heap_group *new_heap, \\$/;"	f	file:
 update_heaps	free_bonus.c	/^static void	update_heaps(t_heap_group *prev_heap, t_heap_group *next_heap)$/;"	f	file:
-update_left_part	block_related/delete_block_bonus.c	/^static t_block	*update_left_part(t_block *block, size_t size)$/;"	f	file:
+update_left_part	block_related/delete_partially_bonus.c	/^static t_block	*update_left_part(t_block *block, size_t size)$/;"	f	file:

@@ -27,6 +27,8 @@ SRC_BLOCK =	get_avail_block		\
 			add_free_block		\
 			add_alloc_block		\
 			delete_block		\
+			delete_whole_block	\
+			delete_partially	\
 			extend_block		\
 			shrink_alloc_block	\
 			shrink_free_block	\

@@ -55,7 +55,9 @@ void	*extend_block(t_heap_group *heap, t_block *ptr_block, \
 	}
 	else
 	{
+		pthread_mutex_unlock(&g_mutex);
 		new_ptr = malloc(realloc_size);
+		pthread_mutex_lock(&g_mutex);
 		if (!new_ptr)
 			return NULL;
 		if (ptr_block->prev)

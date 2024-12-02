@@ -1,6 +1,6 @@
-#include "libft_malloc_bonus.h"
+#include "libft_malloc.h"
 
-static size_t	check_avalaible_blocks(t_block *heap_free, size_t size)
+static size_t	check_available_blocks(t_block *heap_free, size_t size)
 {
 	while (heap_free)
 	{

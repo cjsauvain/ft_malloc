@@ -26,8 +26,9 @@ static void	munmap_heap(t_heap_group *heap, t_block *block)
 	size_t			alloc_size;
 	int				status;
 
-	alloc_size = block->size + sizeof(t_heap_group) + sizeof(t_block);
-	ptr = (void *)((char *)block - sizeof(t_heap_group));
+	alloc_size = block->size \
+				 + ALIGN_MEM(sizeof(t_heap_group)) + sizeof(t_block);
+	ptr = (void *)((char *)block - ALIGN_MEM(sizeof(t_heap_group)));
 	prev_heap = heap->prev;
 	next_heap = heap->next;
 	status = munmap(ptr, ALIGN_MEM(alloc_size));

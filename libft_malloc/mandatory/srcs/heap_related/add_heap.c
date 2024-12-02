@@ -25,7 +25,7 @@ static t_heap_group	*check_if_heap_contiguous(t_heap_group *new_heap, \
 	heaps = select_heap(size);
 	while (heaps)
 	{
-		offset = heaps->aligned_size + sizeof(t_heap_group);
+		offset = heaps->aligned_size + ALIGN_MEM(sizeof(t_heap_group));
 		if ((char *)new_heap + alloc_size == (char *)heaps)
 			return heaps;
 		else if ((char *)heaps + offset == (char *)new_heap)

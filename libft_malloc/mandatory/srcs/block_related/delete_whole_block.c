@@ -27,8 +27,7 @@ t_block	*delete_whole_block(t_block *block, int merge_req)
 	}
 	else if (!block->prev)
 		return NULL;
-	if (block->prev)
-		offset = block->prev->aligned_size + sizeof(t_block);
+	offset = block->prev->aligned_size + sizeof(t_block);
 	if (merge_req && (char *)block->prev + offset == (char *)block->next)
 		merging_blocks(block);
 	else

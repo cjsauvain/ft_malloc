@@ -5,7 +5,6 @@ typedef struct s_block
 {
 	size_t			size;
 	size_t			aligned_size;
-	bool			reached_end_page;
 	struct s_block	*prev;
 	struct s_block	*next;
 }	t_block;

@@ -51,7 +51,7 @@ void	free(void *ptr)
 	heap = find_heap(block, 0);
 	if (!heap)
 		return ;
-	if (block->size > SMALL_BLOCK)
+	if (heap->prev && !heap->alloc_block)
 		munmap_heap(heap, block);
 	else
 		free_block(heap, block);

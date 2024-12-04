@@ -46,14 +46,11 @@ t_heap_group	*add_heap(size_t size)
 		PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
 	if (new_heap == MAP_FAILED)
 		return NULL;
-	if (size <= SMALL_BLOCK)
+	heap_pos = check_if_heap_contiguous(new_heap, alloc_size, size);
+	if (heap_pos)
 	{
-		heap_pos = check_if_heap_contiguous(new_heap, alloc_size, size);
-		if (heap_pos)
-		{
-			new_heap = merge_heaps(heap_pos, new_heap, alloc_size);
-			return new_heap;
-		}
+		new_heap = merge_heaps(heap_pos, new_heap, alloc_size);
+		return new_heap;
 	}
 	add_new_heap(new_heap, alloc_size, size);
 	return new_heap;

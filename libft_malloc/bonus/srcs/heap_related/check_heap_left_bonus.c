@@ -15,8 +15,6 @@ t_heap_group	*check_heap_left(size_t size)
 {
 	t_heap_group	*heap;
 
-	if (size > SMALL_BLOCK)
-		return NULL;
 	heap = select_heap(size);
 	while (heap)
 	{

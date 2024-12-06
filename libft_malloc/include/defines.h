@@ -10,9 +10,11 @@
 # define SMALL_HEAP		26 * PAGE_SIZE
 
 # define YEL "\e[0;33m"
-# define MAG "\e[0;35m"
 # define BCYN "\e[1;36m"
+# define BMAG "\e[1;35m"
+# define MAG "\e[0;35m"
 # define BRED "\e[1;31m"
+# define URED "\e[4;31m"
 # define RESET "\e[0m"
 
 #endif

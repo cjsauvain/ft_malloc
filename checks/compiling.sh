@@ -15,7 +15,7 @@ compile_test()
 	display_compiling_banner
 	if [[ $3 = "FLAGS" ]]; then
 		INC_LIBFT="-I ../libft"
-		INC_LIBFT_MALLOC="-I ../libft_malloc/mandatory/include"
+		INC_LIBFT_MALLOC="-I ../libft_malloc/include"
 		LIBFLAGS="-L.. -lft_malloc"
 	fi
     gcc ${FILE_SRC} ${INC_LIBFT} ${INC_LIBFT_MALLOC} ${LIBFLAGS} -o ${FILE_EXEC}

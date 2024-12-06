@@ -69,6 +69,9 @@ OBJS = $(subst $(DIR_SRCS)/,,$(SRCS:%.c=$(OBJS_DIR)/%.o))
 
 HEADERS =	$(DIR_LIBFT)/libft.h 					\
 			$(DIR_INCLUDE_MALLOC)/libft_malloc.h	\
+			$(DIR_INCLUDE_MALLOC)/defines.h	\
+			$(DIR_INCLUDE_MALLOC)/struct.h	\
+
 INCLUDE =	-I $(DIR_LIBFT)				\
 			-I $(DIR_INCLUDE_MALLOC)	\
 
@@ -81,18 +84,18 @@ LIBFT_LINK = -Llibft -lft
 
 ########################## RULES ###########################
 
-$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c $(HEADERS)
+$(OBJS_DIR)/%.o: $(DIR_SRCS)/%.c $(HEADERS)
 	$(CC) $(CFLAGS) $(SHAREDLIB_FLAGS) $(INCLUDE) $(LIBFT_LINK) -c $< -o $@
 
 all: $(NAME)
 
 $(OBJS_DIR):
-	@mkdir -p	$(OBJS_DIR)/block_related	\
-				$(OBJS_DIR)/heap_related	\
-				$(OBJS_DIR)/show_mem		\
+	@mkdir -p	$(OBJS_DIR)/block		\
+				$(OBJS_DIR)/heap		\
+				$(OBJS_DIR)/show_mem	\
 
-$(NAME): $(LIBFT) $(HEADERS) $(OBJS)
-	$(CC) $(CFLAGS) $(SHAREDLIB_FLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+$(NAME): $(LIBFT) $(HEADERS) $(OBJS_DIR) $(OBJS)
+	$(CC) $(CFLAGS) $(SHAREDLIB_FLAGS) $(INCLUDE) $(OBJS) $(LIBFT) -o $(NAME)
 	rm -f $(SYMLINK_LIB)
 	ln -s $(NAME) $(SYMLINK_LIB)
 
@@ -101,7 +104,7 @@ $(LIBFT):
 
 clean:
 	make clean -C libft
-	rm -rf $(OBJS)
+	rm -rf $(OBJS_DIR)
 
 fclean: clean
 	rm -rf libft/libft.a

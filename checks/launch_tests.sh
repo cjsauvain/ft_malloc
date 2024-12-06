@@ -31,16 +31,14 @@ first_part_tests()
 second_part_tests()
 {
 	for i in {7..9}; do
-		if [[ !($1 = "bonus" && $i -eq 8) ]]; then
-			if [ $i -eq 8 ]; then
-				compile_test ${TEST_SRC}${i}.c "test${i}" "FLAGS"
-			else
-				compile_test ${TEST_SRC}${i}.c "test${i}"
-			fi
-    		echo -e " ${UBLUE}libft_malloc :${RESET} "
-			${LINUX_RUN} "./test${i}"
-			rm -rf "test${i}"
+		if [ $i -eq 8 ]; then
+			compile_test ${TEST_SRC}${i}.c "test${i}" "FLAGS"
+		else
+			compile_test ${TEST_SRC}${i}.c "test${i}"
 		fi
+    	echo -e " ${UBLUE}libft_malloc :${RESET} "
+		${LINUX_RUN} "./test${i}"
+		rm -rf "test${i}"
 	done
 }
 

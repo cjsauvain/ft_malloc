@@ -1,4 +1,4 @@
-#include "libft_malloc_bonus.h"
+#include "libft_malloc.h"
 
 static void	display_next_block_address(t_heap_group *heap, char *heap_str, t_block *alloc_block)
 {
@@ -45,7 +45,7 @@ static void	display_heap(size_t size, char *heap_str)
 	}
 }
 
-void	show_alloc_mem_ex(char *heap_str)
+void	show_mem_hexdump(char *heap_str)
 {
 	if (!ft_strncmp(heap_str, "ALL", 3))
 	{

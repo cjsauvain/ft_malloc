@@ -9,99 +9,92 @@ endif
 ######################### DIRS ##########################
 
 DIR_MALLOC = libft_malloc
-DIR_SRCS_MANDATORY = $(DIR_MALLOC)/mandatory/srcs
-DIR_SRCS_BONUS = $(DIR_MALLOC)/bonus/srcs
-DIR_INCLUDE_MANDATORY = $(DIR_MALLOC)/mandatory/include
-DIR_INCLUDE_BONUS = $(DIR_MALLOC)/bonus/include
+DIR_SRCS = $(DIR_MALLOC)/srcs
+DIR_INCLUDE_MALLOC = $(DIR_MALLOC)/include
 DIR_LIBFT = libft
 
-####################### LIBRARIES #######################
+####################### LIBRARY #######################
 
 NAME = $(DIR_MALLOC)/libft_malloc_$(HOSTTYPE).so
 SYMLINK_LIB = libft_malloc.so
 LIBFT = $(DIR_LIBFT)/libft.a
 
-######################### FILES ##########################
+######################### SRCS/OBJS ##########################
 
-SRC_BLOCK =	get_avail_block		\
-			add_free_block		\
-			add_alloc_block		\
-			delete_block		\
-			delete_whole_block	\
-			delete_partially	\
-			extend_block		\
-			shrink_alloc_block	\
-			shrink_free_block	\
+SRC_BLOCK =	get_avail_block.c		\
+			add_free_block.c		\
+			add_alloc_block.c		\
+			delete_block.c			\
+			delete_whole_block.c	\
+			delete_partially.c		\
+			extend_block.c			\
+			shrink_alloc_block.c	\
+			shrink_free_block.c		\
 
-SRCS_BLOCK = $(addprefix block_related/, $(SRC_BLOCK))
+SRCS_BLOCK = $(addprefix block/, $(SRC_BLOCK))
 
-SRC_HEAP =	add_heap					\
-			create_new_heap				\
-			merge_heaps					\
-			add_new_heap_free_blocks	\
-			add_heap_pos_free_blocks	\
-			find_heap					\
-			initialize_new_heap			\
-			select_heap					\
-			get_heap_group				\
-			check_heap_state			\
-			check_heap_left				\
+SRC_HEAP =	add_heap.c					\
+			create_new_heap.c			\
+			merge_heaps.c				\
+			add_new_heap_free_blocks.c	\
+			add_heap_pos_free_blocks.c	\
+			find_heap.c					\
+			initialize_new_heap.c		\
+			select_heap.c				\
+			get_heap_group.c			\
+			check_heap_state.c			\
+			check_heap_left.c			\
 
-SRCS_HEAP = $(addprefix heap_related/, $(SRC_HEAP))
+SRCS_HEAP = $(addprefix heap/, $(SRC_HEAP))
+
+SRC_SHOW_MEM =	show_alloc_mem.c		\
+				show_mem_hexdump.c		\
+				display_hexa_format.c	\
+
+SRCS_SHOW_MEM = $(addprefix show_mem/, $(SRC_SHOW_MEM))
 
 SRC =	$(SRCS_BLOCK)		\
 		$(SRCS_HEAP)		\
-		malloc				\
-		realloc				\
-		free				\
+		$(SRCS_SHOW_MEM)	\
+		malloc.c			\
+		realloc.c			\
+		free.c				\
 
-OBJS = $(SRCS:%.c=%.o)
+SRCS =	$(addprefix $(DIR_SRCS)/, $(SRC))
+
+OBJS_DIR = objects
+OBJS = $(subst $(DIR_SRCS)/,,$(SRCS:%.c=$(OBJS_DIR)/%.o))
 
 ######################### HEADERS ##########################
 
-HEADERS = $(DIR_LIBFT)/libft.h
-INCLUDE = -I $(DIR_LIBFT)
+HEADERS =	$(DIR_LIBFT)/libft.h 					\
+			$(DIR_INCLUDE_MALLOC)/libft_malloc.h	\
+INCLUDE =	-I $(DIR_LIBFT)				\
+			-I $(DIR_INCLUDE_MALLOC)	\
 
 ####################### COMPILATION ########################
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g
-LIBFLAGS = -fPIC -shared
+CFLAGS = -Wall -Werror -Wextra -pthread -g
+SHAREDLIB_FLAGS = -fPIC -shared
 LIBFT_LINK = -Llibft -lft
 
 ########################## RULES ###########################
 
-ifdef BONUS
-			INCLUDE +=	-I $(DIR_INCLUDE_BONUS)
-			HEADERS +=	$(DIR_INCLUDE_BONUS)/libft_malloc_bonus.h	\
-						$(DIR_INCLUDE_BONUS)/defines_bonus.h		\
-						$(DIR_INCLUDE_BONUS)/struct_bonus.h
-			SRCS =	$(addsuffix _bonus.c, $(addprefix $(DIR_SRCS_BONUS)/, $(SRC)))	\
-					$(DIR_SRCS_BONUS)/show_mem_hexdump/show_mem_hexdump_bonus.c		\
-					$(DIR_SRCS_BONUS)/show_mem_hexdump/display_hexa_format_bonus.c
-			CFLAGS += -pthread
-
-else
-			INCLUDE +=	-I $(DIR_INCLUDE_MANDATORY)
-			HEADERS +=	$(DIR_INCLUDE_MANDATORY)/libft_malloc.h	\
-						$(DIR_INCLUDE_MANDATORY)/defines.h			\
-						$(DIR_INCLUDE_MANDATORY)/struct.h
-			SRCS =	$(addsuffix .c, $(addprefix $(DIR_SRCS_MANDATORY)/, $(SRC)))	\
-					$(DIR_SRCS_MANDATORY)/show_mem/show_alloc_mem.c
-endif
-
-%.o: %.c
-	$(CC) $(CFLAGS) $(LIBFLAGS) $(INCLUDE) $(LIBFT_LINK) -c $< -o $@
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c $(HEADERS)
+	$(CC) $(CFLAGS) $(SHAREDLIB_FLAGS) $(INCLUDE) $(LIBFT_LINK) -c $< -o $@
 
 all: $(NAME)
 
+$(OBJS_DIR):
+	@mkdir -p	$(OBJS_DIR)/block_related	\
+				$(OBJS_DIR)/heap_related	\
+				$(OBJS_DIR)/show_mem		\
+
 $(NAME): $(LIBFT) $(HEADERS) $(OBJS)
-	$(CC) $(CFLAGS) $(LIBFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(SHAREDLIB_FLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 	rm -f $(SYMLINK_LIB)
 	ln -s $(NAME) $(SYMLINK_LIB)
-
-bonus:
-	make BONUS=1
 
 $(LIBFT):
 	make -C libft -s
@@ -110,12 +103,9 @@ clean:
 	make clean -C libft
 	rm -rf $(OBJS)
 
-cleanb:
-	make clean BONUS=1
-
-fclean: clean cleanb
+fclean: clean
 	rm -rf libft/libft.a
-	rm -rf $(NAME) $(SYMLINK_LIB) malloc
+	rm -rf $(NAME) $(SYMLINK_LIB)
 
 re: fclean all
 

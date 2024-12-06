@@ -23,7 +23,7 @@ static void	initialize_new_heap_free_blocks(t_heap_group *new_heap, \
 	t_heap_group *heap_pos, size_t alloc_size)
 {
 	size_t	offset;
-	
+
 	offset = ALIGN_MEM(sizeof(t_heap_group));
 	if ((char *)heap_pos + offset == (char *)heap_pos->free_block)
 		fill_contiguous_free_blocks(heap_pos, new_heap->free_block, alloc_size);
@@ -37,7 +37,7 @@ void	add_heap_pos_free_blocks(t_heap_group *heap_pos, \
 	t_heap_group *new_heap, size_t alloc_size)
 {
 	size_t	offset;
-	
+
 	if (heap_pos->prev)
 		heap_pos->prev->next = new_heap;
 	if (heap_pos->next)

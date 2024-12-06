@@ -1,12 +1,12 @@
-#ifndef LIBFT_MALLOC_BONUS_H
-# define LIBFT_MALLOC_BONUS_H
+#ifndef LIBFT_MALLOC_H
+# define LIBFT_MALLOC_H
 
 # include <sys/mman.h>
 # include <unistd.h>
 # include <stdbool.h>
 # include <pthread.h>
-# include "struct_bonus.h"
-# include "defines_bonus.h"
+# include "struct.h"
+# include "defines.h"
 # include "libft.h"
 
 
@@ -26,7 +26,8 @@ t_heap_group	*select_heap(size_t size);
 void			*get_avail_block(t_heap_group *heap, size_t size);
 void			free(void *ptr);
 void			*realloc(void *ptr, size_t size);
-void			show_alloc_mem_ex(char *heap_str);
+void			show_mem_hexdump(char *heap_str);
+void			show_alloc_mem(void);
 t_heap_group	*find_heap(t_block *block, int i);
 t_heap_group	*merge_heaps(t_heap_group *heap_pos, t_heap_group *new_heap, \
 					size_t alloc_size);
